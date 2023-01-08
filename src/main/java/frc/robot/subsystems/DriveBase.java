@@ -13,6 +13,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.wpilibj.ADIS16448_IMU;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -28,6 +29,7 @@ public class DriveBase extends SubsystemBase {
     private CANSparkMax m_RightFollower;
 
     private ADXRS450_Gyro m_Gyro;
+    private ADIS16448_IMU m_IMU;
 
     private DifferentialDrive m_Drive;
     private DifferentialDriveOdometry m_Odometry;
@@ -50,7 +52,10 @@ public class DriveBase extends SubsystemBase {
         m_Drive = new DifferentialDrive(m_LeftLeader, m_RightLeader);
 
         m_Gyro = new ADXRS450_Gyro();
+        m_IMU = new ADIS16448_IMU();
+
         m_Gyro.calibrate();
+        m_IMU.calibrate();
 
         m_LeftLeader.getEncoder().setPositionConversionFactor(Constants.POSITION_CONVERSION_FACTOR);
         m_RightLeader.getEncoder().setPositionConversionFactor(Constants.POSITION_CONVERSION_FACTOR);
@@ -79,10 +84,26 @@ public class DriveBase extends SubsystemBase {
                     forward.getAsDouble(),
                     turn.getAsDouble()
                 );
-            });
-      }
+            }
+        );
+    }
 
-      public DifferentialDrive getDrive() {
+    public CommandBase balanceCommand() {
+        return run(
+            () -> tankDrive(
+                Constants.k_BalanceController.calculate(
+                    getRobotPitch(),
+                    0
+                ),
+                Constants.k_BalanceController.calculate(
+                    getRobotPitch(),
+                    0
+                )
+            )
+        );
+    }
+
+    public DifferentialDrive getDrive() {
         return m_Drive;
     }
 
@@ -103,6 +124,12 @@ public class DriveBase extends SubsystemBase {
     public void tankDriveVolts(double leftVolts, double rightVolts) {
         m_LeftLeader.setVoltage(leftVolts);
         m_RightLeader.setVoltage(rightVolts);
+        m_Drive.feed();
+    }
+
+    public void tankDrive(double left, double right) {
+        m_LeftLeader.set(left);
+        m_RightLeader.set(right);
         m_Drive.feed();
     }
 
@@ -131,6 +158,9 @@ public class DriveBase extends SubsystemBase {
         return -m_Gyro.getRate();
     }
 
+    public double getRobotPitch() {
+        return m_IMU.getGyroAngleZ(); // TODO: THIS MAY BE THE WRONG METHOD. THE CORRECT METHOD IS WHICHEVER ONE RESPONDS TO A CHANGE IN THE ROBOT'S PITCH
+    }
         
     public static DriveBase getInstance() {
         if (m_Instance == null) {

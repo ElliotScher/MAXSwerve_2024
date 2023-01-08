@@ -2,6 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
+
 package frc.robot;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -21,10 +22,15 @@ public class RobotContainer {
 
     public RobotContainer() {
         configureBindings();
+        // ADD AUTOS TO SMART DASHBOARD HERE
         SmartDashboard.putData("Autonomous Mode", mAutoChooser);
     }
 
     private void configureBindings() {
+        m_Controller.a().onTrue(
+            m_DriveBase.balanceCommand()
+        );
+
         m_DriveBase.setDefaultCommand(
             m_DriveBase.driveCommand(
                 () -> m_Controller.getLeftY(),

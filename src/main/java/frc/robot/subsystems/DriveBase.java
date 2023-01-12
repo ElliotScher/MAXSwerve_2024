@@ -10,6 +10,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
@@ -29,6 +30,7 @@ public class DriveBase extends SubsystemBase {
     private CANSparkMax m_RightFollower;
 
     private ADIS16448_IMU m_IMU;
+    private PIDController m_PitchController;
 
     private DifferentialDrive m_Drive;
     private DifferentialDriveOdometry m_Odometry;
@@ -42,27 +44,27 @@ public class DriveBase extends SubsystemBase {
 
         m_LeftFollower.follow(m_LeftLeader);
         m_RightFollower.follow(m_RightLeader);
-
-        m_LeftLeader.setIdleMode(IdleMode.kBrake);
-        m_RightLeader.setIdleMode(IdleMode.kBrake);
-        m_LeftFollower.setIdleMode(IdleMode.kBrake);
-        m_RightFollower.setIdleMode(IdleMode.kBrake);
-
-        m_Drive = new DifferentialDrive(m_LeftLeader, m_RightLeader);
-
-        m_IMU = new ADIS16448_IMU();
-
-        m_IMU.calibrate();
+        
+        m_LeftLeader.setInverted(true);
+        m_LeftFollower.setInverted(true);
 
         m_LeftLeader.getEncoder().setPositionConversionFactor(Constants.POSITION_CONVERSION_FACTOR);
         m_RightLeader.getEncoder().setPositionConversionFactor(Constants.POSITION_CONVERSION_FACTOR);
         m_LeftLeader.getEncoder().setVelocityConversionFactor(Constants.VELOCITY_CONVERSION_FACTOR);
         m_RightLeader.getEncoder().setVelocityConversionFactor(Constants.VELOCITY_CONVERSION_FACTOR);
 
-        m_Odometry = new DifferentialDriveOdometry(new Rotation2d(m_IMU.getGyroAngleX()), m_LeftLeader.getEncoder().getPosition(), m_RightLeader.getEncoder().getPosition());
+        m_LeftLeader.setIdleMode(IdleMode.kBrake);
+        m_RightLeader.setIdleMode(IdleMode.kBrake);
+        m_LeftFollower.setIdleMode(IdleMode.kBrake);
+        m_RightFollower.setIdleMode(IdleMode.kBrake);
 
-        m_LeftLeader.setInverted(true);
-        m_LeftFollower.setInverted(true);
+        m_IMU = new ADIS16448_IMU();
+        m_IMU.calibrate();
+
+        m_PitchController = new PIDController(Constants.k_pPitch, Constants.k_iPitch, Constants.k_dPitch);
+        
+        m_Drive = new DifferentialDrive(m_LeftLeader, m_RightLeader);
+        m_Odometry = new DifferentialDriveOdometry(new Rotation2d(m_IMU.getGyroAngleX()), m_LeftLeader.getEncoder().getPosition(), m_RightLeader.getEncoder().getPosition());
 
         resetEncoders();
         resetGyro();
@@ -91,11 +93,11 @@ public class DriveBase extends SubsystemBase {
     public CommandBase balanceCommand() {
         return run(
             () -> tankDrive(
-                Constants.k_BalanceController.calculate(
+                m_PitchController.calculate(
                     getRobotPitch(),
                     0
                 ),
-                -Constants.k_BalanceController.calculate(
+                -m_PitchController.calculate(
                     getRobotPitch(),
                     0
                 )

@@ -4,7 +4,6 @@
 
 package frc.robot;
 
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
@@ -18,33 +17,34 @@ public final class Constants {
     public static final double POSITION_CONVERSION_FACTOR = ((1.0/GEAR_BOX_RATIO) * (Math.PI*WHEEL_DIAMETER));
     public static final double VELOCITY_CONVERSION_FACTOR = ((1.0/GEAR_BOX_RATIO) * (Math.PI*WHEEL_DIAMETER)*(1.0/60));
 
-    public static final double kMaxSpeedMetersPerSecond = 1;
-    public static final double kMaxAccelerationMetersPerSecondSquared = 2;
+    public static final double k_MaxSpeedMetersPerSecond = 1;
+    public static final double k_MaxAccelerationMetersPerSecondSquared = 2;
 
-    public static final double kRamseteB = 2;
-    public static final double kRamseteZeta = 0.7;
+    public static final double k_RamseteB = 2;
+    public static final double k_RamseteZeta = 0.7;
 
-    public static final double ksVolts = 0.08134;
-    public static final double kvVoltSecondsPerMeter = 2.0181;
-    public static final double kaVoltSecondsSquaredPerMeter = 0.36127;
+    public static final double k_sVolts = 0.08134;
+    public static final double k_vVoltSecondsPerMeter = 2.0181;
+    public static final double k_aVoltSecondsSquaredPerMeter = 0.36127;
 
-    public static final double kPDriveVel = 0.0060339;
+    public static final double k_pDriveVel = 0.0060339;
+    public static final double k_pPitch = 0;
+    public static final double k_iPitch = 0;
+    public static final double k_dPitch = 0;
 
-    public static final double kTrackwidthMeters = Units.inchesToMeters(22);
-    public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(kTrackwidthMeters);
+    public static final double k_TrackwidthMeters = Units.inchesToMeters(22);
+    public static final DifferentialDriveKinematics k_DriveKinematics = new DifferentialDriveKinematics(k_TrackwidthMeters);
 
-    public static final DifferentialDriveVoltageConstraint autoVoltageConstraint = new DifferentialDriveVoltageConstraint(new SimpleMotorFeedforward(
-        Constants.ksVolts,
-        Constants.kvVoltSecondsPerMeter,
-        Constants.kaVoltSecondsSquaredPerMeter),
-    Constants.kDriveKinematics,
+    public static final DifferentialDriveVoltageConstraint k_AutoVoltageConstraint = new DifferentialDriveVoltageConstraint(new SimpleMotorFeedforward(
+        Constants.k_sVolts,
+        Constants.k_vVoltSecondsPerMeter,
+        Constants.k_aVoltSecondsSquaredPerMeter),
+    Constants.k_DriveKinematics,
     10);
 
     public static final TrajectoryConfig config = new TrajectoryConfig(
-        Constants.kMaxSpeedMetersPerSecond,
-        Constants.kMaxAccelerationMetersPerSecondSquared)
-    .setKinematics(Constants.kDriveKinematics)
-    .addConstraint(Constants.autoVoltageConstraint);
-
-    public static final PIDController k_BalanceController = new PIDController(0, 0, 0);
+        Constants.k_MaxSpeedMetersPerSecond,
+        Constants.k_MaxAccelerationMetersPerSecondSquared)
+    .setKinematics(Constants.k_DriveKinematics)
+    .addConstraint(Constants.k_AutoVoltageConstraint);
 }

@@ -6,10 +6,11 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 public class AutoRoutine extends SequentialCommandGroup {
-    
     private ArrayList<AutoPath> m_PathList;
+    private String m_Name;
 
-    public AutoRoutine() {
+    public AutoRoutine(String name) {
+        m_Name = name;
         m_PathList = new ArrayList<AutoPath>();
     }
 
@@ -26,5 +27,9 @@ public class AutoRoutine extends SequentialCommandGroup {
 
     public ArrayList<AutoPath> getTrajectories() {
         return m_PathList;
+    }
+
+    public String getName() {
+        return m_Name;
     }
 }

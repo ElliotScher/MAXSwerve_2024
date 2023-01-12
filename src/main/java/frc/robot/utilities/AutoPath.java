@@ -19,7 +19,7 @@ public class AutoPath {
     private final DriveBase m_DriveBase = DriveBase.getInstance();
     private Trajectory m_Trajectory;
     private Command m_Command;
-    
+
     public AutoPath(String jsonPath) {
         try {
             Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(jsonPath);
@@ -54,21 +54,21 @@ public class AutoPath {
         }
 
         m_Command = new RamseteCommand(
-            m_Trajectory,
-            DriveBase.getInstance()::getPose,
-            new RamseteController(Constants.k_RamseteB, Constants.k_RamseteZeta),
-            new SimpleMotorFeedforward(
-                Constants.k_sVolts,
-                Constants.k_vVoltSecondsPerMeter,
-                Constants.k_aVoltSecondsSquaredPerMeter),
-            Constants.k_DriveKinematics,
-            DriveBase.getInstance()::getWheelSpeeds,
-            new PIDController(Constants.k_pDriveVel, 0, 0),
-            new PIDController(Constants.k_pDriveVel, 0, 0),
-            DriveBase.getInstance()::tankDriveVolts,
-            DriveBase.getInstance()
-        )
-        .alongWith(additionalCommand);
+                m_Trajectory,
+                DriveBase.getInstance()::getPose,
+                new RamseteController(Constants.k_RamseteB, Constants.k_RamseteZeta),
+                new SimpleMotorFeedforward(
+                    Constants.k_sVolts,
+                    Constants.k_vVoltSecondsPerMeter,
+                    Constants.k_aVoltSecondsSquaredPerMeter),
+                Constants.k_DriveKinematics,
+                DriveBase.getInstance()::getWheelSpeeds,
+                new PIDController(Constants.k_pDriveVel, 0, 0),
+                new PIDController(Constants.k_pDriveVel, 0, 0),
+                DriveBase.getInstance()::tankDriveVolts,
+                DriveBase.getInstance()
+            )
+            .alongWith(additionalCommand);
     }
 
     public AutoPath(String jsonPath, Command beforeStarting, Command additionalCommand) {
@@ -80,22 +80,22 @@ public class AutoPath {
         }
 
         m_Command = new RamseteCommand(
-            m_Trajectory,
-            DriveBase.getInstance()::getPose,
-            new RamseteController(Constants.k_RamseteB, Constants.k_RamseteZeta),
-            new SimpleMotorFeedforward(
-                Constants.k_sVolts,
-                Constants.k_vVoltSecondsPerMeter,
-                Constants.k_aVoltSecondsSquaredPerMeter),
-            Constants.k_DriveKinematics,
-            DriveBase.getInstance()::getWheelSpeeds,
-            new PIDController(Constants.k_pDriveVel, 0, 0),
-            new PIDController(Constants.k_pDriveVel, 0, 0),
-            DriveBase.getInstance()::tankDriveVolts,
-            DriveBase.getInstance()
-        )
-        .alongWith(additionalCommand)
-        .beforeStarting(beforeStarting);
+                m_Trajectory,
+                DriveBase.getInstance()::getPose,
+                new RamseteController(Constants.k_RamseteB, Constants.k_RamseteZeta),
+                new SimpleMotorFeedforward(
+                    Constants.k_sVolts,
+                    Constants.k_vVoltSecondsPerMeter,
+                    Constants.k_aVoltSecondsSquaredPerMeter),
+                Constants.k_DriveKinematics,
+                DriveBase.getInstance()::getWheelSpeeds,
+                new PIDController(Constants.k_pDriveVel, 0, 0),
+                new PIDController(Constants.k_pDriveVel, 0, 0),
+                DriveBase.getInstance()::tankDriveVolts,
+                DriveBase.getInstance()
+            )
+            .alongWith(additionalCommand)
+            .beforeStarting(beforeStarting);
     }
 
     public AutoPath(String jsonPath, Command beforeStarting, Command additionalCommand, Command onCompletion) {
@@ -107,23 +107,23 @@ public class AutoPath {
         }
 
         m_Command = new RamseteCommand(
-            m_Trajectory,
-            DriveBase.getInstance()::getPose,
-            new RamseteController(Constants.k_RamseteB, Constants.k_RamseteZeta),
-            new SimpleMotorFeedforward(
-                Constants.k_sVolts,
-                Constants.k_vVoltSecondsPerMeter,
-                Constants.k_aVoltSecondsSquaredPerMeter),
-            Constants.k_DriveKinematics,
-            DriveBase.getInstance()::getWheelSpeeds,
-            new PIDController(Constants.k_pDriveVel, 0, 0),
-            new PIDController(Constants.k_pDriveVel, 0, 0),
-            DriveBase.getInstance()::tankDriveVolts,
-            DriveBase.getInstance()
-        )
-        .alongWith(additionalCommand)
-        .beforeStarting(beforeStarting)
-        .andThen(onCompletion);
+                m_Trajectory,
+                DriveBase.getInstance()::getPose,
+                new RamseteController(Constants.k_RamseteB, Constants.k_RamseteZeta),
+                new SimpleMotorFeedforward(
+                    Constants.k_sVolts,
+                    Constants.k_vVoltSecondsPerMeter,
+                    Constants.k_aVoltSecondsSquaredPerMeter),
+                Constants.k_DriveKinematics,
+                DriveBase.getInstance()::getWheelSpeeds,
+                new PIDController(Constants.k_pDriveVel, 0, 0),
+                new PIDController(Constants.k_pDriveVel, 0, 0),
+                DriveBase.getInstance()::tankDriveVolts,
+                DriveBase.getInstance()
+            )
+            .alongWith(additionalCommand)
+            .beforeStarting(beforeStarting)
+            .andThen(onCompletion);
     }
 
     public Command getCommand() {

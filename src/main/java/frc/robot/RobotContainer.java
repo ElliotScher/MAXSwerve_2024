@@ -19,22 +19,23 @@ import frc.robot.utilities.AutoRoutine;
 
 public class RobotContainer {
     private final DriveBase m_DriveBase = DriveBase.getInstance();
-
+    private final AutoRoutine[] m_AutoList = {
+        new ChargingStation(),
+        new Mobility_ChargingStation(),
+        new Grid2_Node1_ChargingStation(),
+        new Grid2_Node1_Mobility_ChargingStation()
+    };
     private final CommandXboxController m_Controller = new CommandXboxController(0);
-
     private final static SendableChooser<AutoRoutine> m_AutoChooser = new SendableChooser<AutoRoutine>();
-    
     private final static Field2d m_Field = new Field2d();
 
     public RobotContainer() {
         configureBindings();
-        m_AutoChooser.addOption("ChargingStation", new ChargingStation());
-        m_AutoChooser.addOption("Mobility_ChargingStation", new Mobility_ChargingStation());
-        m_AutoChooser.addOption("Grid2_Node1_ChargingStation", new Grid2_Node1_ChargingStation());
-        m_AutoChooser.addOption("Grid2_Node1_Mobility_ChargingStation", new Grid2_Node1_Mobility_ChargingStation());
+        for (AutoRoutine auto : m_AutoList) {
+            m_AutoChooser.addOption(auto.getName(), auto);
+        }
 
         SmartDashboard.putData("Autonomous Mode", m_AutoChooser);
-
         SmartDashboard.putData(m_Field);
     }
 
@@ -66,7 +67,7 @@ public class RobotContainer {
         return m_Field;
     }
 
-    public static SendableChooser<AutoRoutine> getChooser() {
+    public static SendableChooser <AutoRoutine> getChooser() {
         return m_AutoChooser;
     }
 }

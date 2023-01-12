@@ -8,6 +8,7 @@ public class Grid2_Node1_ChargingStation extends AutoRoutine {
     private final AutoPath[] mPathList = {mPath1};
     
     public Grid2_Node1_ChargingStation() {
+        super("Grid2_Node1_ChargingStation");
         addCommands(mPathList);
     }
 }

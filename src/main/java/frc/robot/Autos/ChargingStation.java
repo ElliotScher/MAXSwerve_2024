@@ -8,6 +8,7 @@ public class ChargingStation extends AutoRoutine {
     private final AutoPath[] mPathList = {mPath1};
     
     public ChargingStation() {
+        super("ChargingStation");
         addCommands(mPathList);
     }
 }

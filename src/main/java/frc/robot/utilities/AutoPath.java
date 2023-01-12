@@ -16,20 +16,20 @@ import frc.robot.Constants;
 import frc.robot.subsystems.DriveBase;
 
 public class AutoPath {
-    private final DriveBase mDriveBase = DriveBase.getInstance();
-    private Trajectory mTrajectory;
-    private Command mCommand;
+    private final DriveBase m_DriveBase = DriveBase.getInstance();
+    private Trajectory m_Trajectory;
+    private Command m_Command;
     
     public AutoPath(String jsonPath) {
         try {
             Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(jsonPath);
-            mTrajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+            m_Trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
         } catch (IOException ex) {
             DriverStation.reportError("Unable to open trajectory: " + jsonPath, ex.getStackTrace());
         }
 
-        mCommand = new RamseteCommand(
-            mTrajectory,
+        m_Command = new RamseteCommand(
+            m_Trajectory,
             DriveBase.getInstance()::getPose,
             new RamseteController(Constants.kRamseteB, Constants.kRamseteZeta),
             new SimpleMotorFeedforward(
@@ -48,13 +48,13 @@ public class AutoPath {
     public AutoPath(String jsonPath, Command additionalCommand) {
         try {
             Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(jsonPath);
-            mTrajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+            m_Trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
         } catch (IOException ex) {
             DriverStation.reportError("Unable to open trajectory: " + jsonPath, ex.getStackTrace());
         }
 
-        mCommand = new RamseteCommand(
-            mTrajectory,
+        m_Command = new RamseteCommand(
+            m_Trajectory,
             DriveBase.getInstance()::getPose,
             new RamseteController(Constants.kRamseteB, Constants.kRamseteZeta),
             new SimpleMotorFeedforward(
@@ -74,13 +74,13 @@ public class AutoPath {
     public AutoPath(String jsonPath, Command beforeStarting, Command additionalCommand) {
         try {
             Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(jsonPath);
-            mTrajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+            m_Trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
         } catch (IOException ex) {
             DriverStation.reportError("Unable to open trajectory: " + jsonPath, ex.getStackTrace());
         }
 
-        mCommand = new RamseteCommand(
-            mTrajectory,
+        m_Command = new RamseteCommand(
+            m_Trajectory,
             DriveBase.getInstance()::getPose,
             new RamseteController(Constants.kRamseteB, Constants.kRamseteZeta),
             new SimpleMotorFeedforward(
@@ -101,13 +101,13 @@ public class AutoPath {
     public AutoPath(String jsonPath, Command beforeStarting, Command additionalCommand, Command onCompletion) {
         try {
             Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(jsonPath);
-            mTrajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+            m_Trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
         } catch (IOException ex) {
             DriverStation.reportError("Unable to open trajectory: " + jsonPath, ex.getStackTrace());
         }
 
-        mCommand = new RamseteCommand(
-            mTrajectory,
+        m_Command = new RamseteCommand(
+            m_Trajectory,
             DriveBase.getInstance()::getPose,
             new RamseteController(Constants.kRamseteB, Constants.kRamseteZeta),
             new SimpleMotorFeedforward(
@@ -126,11 +126,15 @@ public class AutoPath {
         .andThen(onCompletion);
     }
 
-    public Command getCommand(Boolean decorated) {
-        return mCommand.andThen(() -> mDriveBase.tankDriveVolts(0, 0));
+    public Command getCommand() {
+        return m_Command.andThen(() -> m_DriveBase.tankDriveVolts(0, 0));
     }
 
     public Pose2d getInitialPose() {
-        return mTrajectory.getInitialPose();
+        return m_Trajectory.getInitialPose();
+    }
+
+    public Trajectory getTrajectory() {
+        return m_Trajectory;
     }
 }

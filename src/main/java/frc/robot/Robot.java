@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.utilities.AutoPath;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -51,7 +52,12 @@ public class Robot extends TimedRobot {
   public void disabledInit() {}
 
   @Override
-  public void disabledPeriodic() {}
+  public void disabledPeriodic() {
+    for (AutoPath path : RobotContainer.getChooser().getSelected().getTrajectories()) {
+      RobotContainer.getField().getObject(path.toString()).setTrajectory(path.getTrajectory());
+      RobotContainer.getField().setRobotPose(RobotContainer.getChooser().getSelected().getInitialPose());
+    }
+  }
 
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override

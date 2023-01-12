@@ -11,10 +11,10 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.ADIS16448_IMU;
-import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -28,7 +28,6 @@ public class DriveBase extends SubsystemBase {
     private CANSparkMax m_LeftFollower;
     private CANSparkMax m_RightFollower;
 
-    private ADXRS450_Gyro m_Gyro;
     private ADIS16448_IMU m_IMU;
 
     private DifferentialDrive m_Drive;
@@ -51,10 +50,8 @@ public class DriveBase extends SubsystemBase {
 
         m_Drive = new DifferentialDrive(m_LeftLeader, m_RightLeader);
 
-        m_Gyro = new ADXRS450_Gyro();
         m_IMU = new ADIS16448_IMU();
 
-        m_Gyro.calibrate();
         m_IMU.calibrate();
 
         m_LeftLeader.getEncoder().setPositionConversionFactor(Constants.POSITION_CONVERSION_FACTOR);
@@ -62,7 +59,10 @@ public class DriveBase extends SubsystemBase {
         m_LeftLeader.getEncoder().setVelocityConversionFactor(Constants.VELOCITY_CONVERSION_FACTOR);
         m_RightLeader.getEncoder().setVelocityConversionFactor(Constants.VELOCITY_CONVERSION_FACTOR);
 
-        m_Odometry = new DifferentialDriveOdometry(m_Gyro.getRotation2d(), m_LeftLeader.getEncoder().getPosition(), m_RightLeader.getEncoder().getPosition());
+        m_Odometry = new DifferentialDriveOdometry(new Rotation2d(m_IMU.getGyroAngleX()), m_LeftLeader.getEncoder().getPosition(), m_RightLeader.getEncoder().getPosition());
+
+        m_LeftLeader.setInverted(true);
+        m_LeftFollower.setInverted(true);
 
         resetEncoders();
         resetGyro();
@@ -71,7 +71,7 @@ public class DriveBase extends SubsystemBase {
     @Override
     public void periodic() {
         m_Odometry.update(
-            m_Gyro.getRotation2d(),
+            new Rotation2d(m_IMU.getAngle()),
             m_LeftLeader.getEncoder().getPosition(),
             m_RightLeader.getEncoder().getPosition()
         );
@@ -95,16 +95,14 @@ public class DriveBase extends SubsystemBase {
                     getRobotPitch(),
                     0
                 ),
-                Constants.k_BalanceController.calculate(
+                -Constants.k_BalanceController.calculate(
                     getRobotPitch(),
                     0
                 )
             )
+        ).until(
+            () -> (getRobotPitch() < 0.1 && getRobotPitch() > -0.1 && m_IMU.getGyroRateZ() < 0.5)
         );
-    }
-
-    public DifferentialDrive getDrive() {
-        return m_Drive;
     }
 
     public Pose2d getPose() {
@@ -118,7 +116,7 @@ public class DriveBase extends SubsystemBase {
     public void resetOdometry(Pose2d pose) {
         resetEncoders();
         resetGyro();
-        m_Odometry.resetPosition(m_Gyro.getRotation2d(), m_LeftLeader.getEncoder().getPosition(), m_RightLeader.getEncoder().getPosition(), pose);
+        m_Odometry.resetPosition(new Rotation2d(m_IMU.getAngle()), m_LeftLeader.getEncoder().getPosition(), m_RightLeader.getEncoder().getPosition(), pose);
     }
 
     public void tankDriveVolts(double leftVolts, double rightVolts) {
@@ -143,23 +141,23 @@ public class DriveBase extends SubsystemBase {
     }
 
     public void resetGyro() {
-        m_Gyro.reset();
+        m_IMU.reset();
     }
 
     public void calibrateGyro() {
-        m_Gyro.calibrate();
+        m_IMU.calibrate();
     }
 
     public double getHeading() {
-        return m_Gyro.getRotation2d().getDegrees();
+        return m_IMU.getAngle();
     }
 
     public double getTurnRate() {
-        return -m_Gyro.getRate();
+        return -m_IMU.getRate();
     }
 
     public double getRobotPitch() {
-        return m_IMU.getGyroAngleZ(); // TODO: THIS MAY BE THE WRONG METHOD. THE CORRECT METHOD IS WHICHEVER ONE RESPONDS TO A CHANGE IN THE ROBOT'S PITCH
+        return m_IMU.getGyroAngleZ(); // THIS MAY BE THE WRONG METHOD. THE CORRECT METHOD IS WHICHEVER ONE RESPONDS TO A CHANGE IN THE ROBOT'S PITCH
     }
         
     public static DriveBase getInstance() {

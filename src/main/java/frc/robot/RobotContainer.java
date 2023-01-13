@@ -10,15 +10,15 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.Autos.ChargingStation;
-import frc.robot.Autos.Grid2_Node1_ChargingStation;
-import frc.robot.Autos.Grid2_Node1_Mobility_ChargingStation;
-import frc.robot.Autos.Mobility_ChargingStation;
+import frc.robot.Autos.Priority.ChargingStation;
+import frc.robot.Autos.Priority.Grid2_Node1_ChargingStation;
+import frc.robot.Autos.Priority.Grid2_Node1_Mobility_ChargingStation;
+import frc.robot.Autos.Priority.Mobility_ChargingStation;
 import frc.robot.subsystems.DriveBase;
 import frc.robot.utilities.AutoRoutine;
 
 public class RobotContainer {
-    private final DriveBase m_DriveBase = DriveBase.getInstance();
+    private static final DriveBase m_DriveBase = DriveBase.getInstance();
     private final AutoRoutine[] m_AutoList = {
         new ChargingStation(),
         new Mobility_ChargingStation(),
@@ -34,7 +34,7 @@ public class RobotContainer {
         for (AutoRoutine auto : m_AutoList) {
             m_AutoChooser.addOption(auto.getName(), auto);
         }
-
+        m_AutoChooser.setDefaultOption("ChargingStation", new ChargingStation());
         SmartDashboard.putData("Autonomous Mode", m_AutoChooser);
         SmartDashboard.putData(m_Field);
     }
@@ -50,17 +50,20 @@ public class RobotContainer {
                 () -> m_Controller.getLeftY()
             )
         );
+
+        m_Controller.b().onTrue(new InstantCommand(() -> m_DriveBase.calibrateGyro()));
     }
 
     public Command getAutonomousCommand() {
-        return new InstantCommand(
-            () -> m_DriveBase.resetOdometry(
-                m_AutoChooser.getSelected().getInitialPose()
-            ),
-            m_DriveBase
-        ).andThen(
-            m_AutoChooser.getSelected()
-        );
+        // return new InstantCommand(
+        //     () -> m_DriveBase.resetOdometry(
+        //         m_AutoChooser.getSelected().getInitialPose()
+        //     ),
+        //     m_DriveBase
+        // ).andThen(
+        //     m_AutoChooser.getSelected()
+        // );
+        return m_DriveBase.testAuto();
     }
 
     public static Field2d getField() {

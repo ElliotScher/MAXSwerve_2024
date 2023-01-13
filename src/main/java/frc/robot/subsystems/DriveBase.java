@@ -15,8 +15,9 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
-import edu.wpi.first.wpilibj.ADIS16448_IMU;
+import edu.wpi.first.wpilibj.ADIS16470_IMU;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -29,7 +30,7 @@ public class DriveBase extends SubsystemBase {
     private CANSparkMax m_LeftFollower;
     private CANSparkMax m_RightFollower;
 
-    private ADIS16448_IMU m_IMU;
+    private ADIS16470_IMU m_IMU;
     private PIDController m_PitchController;
 
     private DifferentialDrive m_Drive;
@@ -58,14 +59,14 @@ public class DriveBase extends SubsystemBase {
         m_LeftFollower.setIdleMode(IdleMode.kBrake);
         m_RightFollower.setIdleMode(IdleMode.kBrake);
 
-        m_IMU = new ADIS16448_IMU();
+        m_IMU = new ADIS16470_IMU();
         m_IMU.calibrate();
 
         m_PitchController = new PIDController(Constants.k_pPitch, Constants.k_iPitch, Constants.k_dPitch);
         m_PitchController.setTolerance(0.1, 0.5);
 
         m_Drive = new DifferentialDrive(m_LeftLeader, m_RightLeader);
-        m_Odometry = new DifferentialDriveOdometry(new Rotation2d(m_IMU.getGyroAngleX()), m_LeftLeader.getEncoder().getPosition(), m_RightLeader.getEncoder().getPosition());
+        m_Odometry = new DifferentialDriveOdometry(new Rotation2d(m_IMU.getAngle()), m_LeftLeader.getEncoder().getPosition(), m_RightLeader.getEncoder().getPosition());
 
         resetEncoders();
         resetGyro();
@@ -78,11 +79,12 @@ public class DriveBase extends SubsystemBase {
             m_LeftLeader.getEncoder().getPosition(),
             m_RightLeader.getEncoder().getPosition()
         );
+        System.out.println(getRobotPitch());
     }
 
     public CommandBase driveCommand(DoubleSupplier forward, DoubleSupplier turn) {
         return run(() -> m_Drive.arcadeDrive(
-            forward.getAsDouble(),
+            -forward.getAsDouble(),
             turn.getAsDouble()
         ));
     }
@@ -90,6 +92,10 @@ public class DriveBase extends SubsystemBase {
     public CommandBase balanceCommand() {
         double output = m_PitchController.calculate(getRobotPitch(), 0);
         return run(() -> tankDrive(output)).until(() -> m_PitchController.atSetpoint());
+    }
+
+    public Command testAuto() {
+        return run(() -> tankDrive(0.2)).until(() -> (Math.abs(getRobotPitch()) < 0.5));        
     }
 
     public Pose2d getPose() {
@@ -122,13 +128,13 @@ public class DriveBase extends SubsystemBase {
 
     public void tankDrive(double speed) {
         m_LeftLeader.set(speed);
-        m_RightLeader.set(speed);
+        m_RightLeader.set(-speed);
         m_Drive.feed();
     }
 
     public void tankDrive(double left, double right) {
         m_LeftLeader.set(left);
-        m_RightLeader.set(right);
+        m_RightLeader.set(-right);
         m_Drive.feed();
     }
 
@@ -154,7 +160,7 @@ public class DriveBase extends SubsystemBase {
     }
 
     public double getRobotPitch() {
-        return m_IMU.getGyroAngleZ(); // THIS MAY BE THE WRONG METHOD. THE CORRECT METHOD IS WHICHEVER ONE RESPONDS TO A CHANGE IN THE ROBOT'S PITCH
+        return m_IMU.getYComplementaryAngle();
     }
 
     public static DriveBase getInstance() {

@@ -14,11 +14,15 @@ import frc.robot.Autos.Priority.ChargingStation;
 import frc.robot.Autos.Priority.Grid2_Node1_ChargingStation;
 import frc.robot.Autos.Priority.Grid2_Node1_Mobility_ChargingStation;
 import frc.robot.Autos.Priority.Mobility_ChargingStation;
-import frc.robot.subsystems.DriveBase;
+import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.utilities.AutoRoutine;
+import frc.robot.utilities.CommandUtililty;
 
 public class RobotContainer {
-    private static final DriveBase m_DriveBase = DriveBase.getInstance();
+    private static final DriveSubsystem m_DriveBase = DriveSubsystem.getInstance();
+    private static final VisionSubsystem m_VisionSubsystem = VisionSubsystem.getInstance();
+
     private final AutoRoutine[] m_AutoList = {
         new ChargingStation(),
         new Mobility_ChargingStation(),
@@ -41,17 +45,19 @@ public class RobotContainer {
 
     private void configureBindings() {
         m_Controller.a().onTrue(
-            m_DriveBase.balanceCommand()
+            CommandUtililty.balanceCommand()
+        );
+
+        m_Controller.b().onTrue(
+            new InstantCommand(() -> m_VisionSubsystem.getDistanceToGrid())
         );
 
         m_DriveBase.setDefaultCommand(
-            m_DriveBase.driveCommand(
+            CommandUtililty.driveCommand(
                 () -> m_Controller.getRightX(),
                 () -> m_Controller.getLeftY()
             )
         );
-
-        m_Controller.b().onTrue(new InstantCommand(() -> m_DriveBase.calibrateGyro()));
     }
 
     public Command getAutonomousCommand() {
@@ -63,7 +69,7 @@ public class RobotContainer {
         // ).andThen(
         //     m_AutoChooser.getSelected()
         // );
-        return m_DriveBase.testAuto();
+        return CommandUtililty.conditionalAuto();
     }
 
     public static Field2d getField() {

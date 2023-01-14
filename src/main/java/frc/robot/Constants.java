@@ -46,4 +46,10 @@ public final class Constants {
             Constants.k_MaxAccelerationMetersPerSecondSquared)
         .setKinematics(Constants.k_DriveKinematics)
         .addConstraint(Constants.k_AutoVoltageConstraint);
+
+    // vision constants
+    public static final double k_CameraHeightMeters = 0;
+    public static final double k_GridAprilTagHeightMeters = 0;
+    public static final double k_CameraPitchRadians = 0;
+    public static final double k_DistanceFromGridTagToChargingStation = Units.inchesToMeters(112.81);
 }

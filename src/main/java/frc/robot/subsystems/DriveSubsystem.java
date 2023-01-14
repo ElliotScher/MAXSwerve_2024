@@ -4,8 +4,6 @@
 
 package frc.robot.subsystems;
 
-import java.util.function.DoubleSupplier;
-
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -17,13 +15,11 @@ import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.ADIS16470_IMU;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-public class DriveBase extends SubsystemBase {
-    private static DriveBase m_Instance;
+public class DriveSubsystem extends SubsystemBase {
+    private static DriveSubsystem m_Instance;
 
     private CANSparkMax m_LeftLeader;
     private CANSparkMax m_RightLeader;
@@ -36,7 +32,7 @@ public class DriveBase extends SubsystemBase {
     private DifferentialDrive m_Drive;
     private DifferentialDriveOdometry m_Odometry;
 
-    public DriveBase() {
+    public DriveSubsystem() {
         m_LeftLeader = new CANSparkMax(1, MotorType.kBrushless);
         m_RightLeader = new CANSparkMax(2, MotorType.kBrushless);
 
@@ -80,22 +76,6 @@ public class DriveBase extends SubsystemBase {
             m_RightLeader.getEncoder().getPosition()
         );
         System.out.println(getRobotPitch());
-    }
-
-    public CommandBase driveCommand(DoubleSupplier forward, DoubleSupplier turn) {
-        return run(() -> m_Drive.arcadeDrive(
-            -forward.getAsDouble(),
-            turn.getAsDouble()
-        ));
-    }
-
-    public CommandBase balanceCommand() {
-        double output = m_PitchController.calculate(getRobotPitch(), 0);
-        return run(() -> tankDrive(output)).until(() -> m_PitchController.atSetpoint());
-    }
-
-    public Command testAuto() {
-        return run(() -> tankDrive(0.2)).until(() -> (Math.abs(getRobotPitch()) < 0.5));        
     }
 
     public Pose2d getPose() {
@@ -163,9 +143,17 @@ public class DriveBase extends SubsystemBase {
         return m_IMU.getYComplementaryAngle();
     }
 
-    public static DriveBase getInstance() {
+    public DifferentialDrive getDrive() {
+        return m_Drive;
+    }
+
+    public PIDController getPitchController() {
+        return m_PitchController;
+    }
+
+    public static DriveSubsystem getInstance() {
         if (m_Instance == null) {
-            m_Instance = new DriveBase();
+            m_Instance = new DriveSubsystem();
         }
         return m_Instance;
     }

@@ -62,6 +62,7 @@ public class DriveSubsystem extends SubsystemBase {
         m_PitchController.setTolerance(0.1, 0.5);
 
         m_Drive = new DifferentialDrive(m_LeftLeader, m_RightLeader);
+        m_Drive.setSafetyEnabled(false);
         m_Odometry = new DifferentialDriveOdometry(new Rotation2d(m_IMU.getAngle()), m_LeftLeader.getEncoder().getPosition(), m_RightLeader.getEncoder().getPosition());
 
         resetEncoders();
@@ -75,7 +76,6 @@ public class DriveSubsystem extends SubsystemBase {
             m_LeftLeader.getEncoder().getPosition(),
             m_RightLeader.getEncoder().getPosition()
         );
-        System.out.println(getRobotPitch());
     }
 
     public Pose2d getPose() {

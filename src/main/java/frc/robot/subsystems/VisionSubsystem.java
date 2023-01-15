@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class VisionSubsystem extends SubsystemBase {
-    private static final PhotonCamera m_Camera = new PhotonCamera("photonvision");
+    private static final PhotonCamera m_Camera = new PhotonCamera("Lime1");
     private static PhotonPipelineResult m_Result;
 
     private static VisionSubsystem m_Instance;

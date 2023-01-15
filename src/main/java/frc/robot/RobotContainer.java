@@ -8,21 +8,15 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.Autos.Priority.ChargingStation;
-import frc.robot.Autos.Priority.Grid2_Node1_ChargingStation;
-import frc.robot.Autos.Priority.Grid2_Node1_Mobility_ChargingStation;
-import frc.robot.Autos.Priority.Mobility_ChargingStation;
-import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.VisionSubsystem;
+import frc.robot.Autos.ChargingStation;
+import frc.robot.Autos.Grid2_Node1_ChargingStation;
+import frc.robot.Autos.Grid2_Node1_Mobility_ChargingStation;
+import frc.robot.Autos.Mobility_ChargingStation;
 import frc.robot.utilities.AutoRoutine;
 import frc.robot.utilities.CommandUtililty;
 
 public class RobotContainer {
-    private static final DriveSubsystem m_DriveBase = DriveSubsystem.getInstance();
-    private static final VisionSubsystem m_VisionSubsystem = VisionSubsystem.getInstance();
-
     private final AutoRoutine[] m_AutoList = {
         new ChargingStation(),
         new Mobility_ChargingStation(),
@@ -49,14 +43,7 @@ public class RobotContainer {
         );
 
         m_Controller.b().onTrue(
-            new InstantCommand(() -> m_VisionSubsystem.getDistanceToGrid())
-        );
-
-        m_DriveBase.setDefaultCommand(
-            CommandUtililty.driveCommand(
-                () -> m_Controller.getRightX(),
-                () -> m_Controller.getLeftY()
-            )
+            CommandUtililty.getDistanceToGrid()
         );
     }
 

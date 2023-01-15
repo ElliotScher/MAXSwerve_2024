@@ -48,8 +48,8 @@ public final class Constants {
         .addConstraint(Constants.k_AutoVoltageConstraint);
 
     // vision constants
-    public static final double k_CameraHeightMeters = 0;
-    public static final double k_GridAprilTagHeightMeters = 0;
+    public static final double k_CameraHeightMeters = Units.inchesToMeters(21.75);
+    public static final double k_GridAprilTagHeightMeters = 0.38;
     public static final double k_CameraPitchRadians = 0;
     public static final double k_DistanceFromGridTagToChargingStation = Units.inchesToMeters(112.81);
 }

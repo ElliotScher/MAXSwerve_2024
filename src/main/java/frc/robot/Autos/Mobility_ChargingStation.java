@@ -1,4 +1,4 @@
-package frc.robot.Autos.Priority;
+package frc.robot.Autos;
 
 import frc.robot.utilities.AutoPath;
 import frc.robot.utilities.AutoRoutine;

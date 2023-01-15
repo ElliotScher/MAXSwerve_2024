@@ -25,7 +25,11 @@ public final class CommandUtililty {
 
     public static CommandBase balanceCommand() {
         double output = m_DriveSubsystem.getPitchController().calculate(m_DriveSubsystem.getRobotPitch(), 0);
-        return new RunCommand(() -> m_DriveSubsystem.tankDrive(output)).until(() -> m_DriveSubsystem.getPitchController().atSetpoint());
+        return new RunCommand(
+            () -> m_DriveSubsystem.tankDrive(output)
+        ).until(
+            () -> m_DriveSubsystem.getPitchController().atSetpoint()
+        );
     }
 
     public static Command testAuto() {
@@ -61,5 +65,9 @@ public final class CommandUtililty {
                 Math.abs(
                     m_VisionSubsystem.getDistanceToGrid()) > (Constants.k_DistanceFromGridTagToChargingStation - Units.inchesToMeters(1))
         ));
+    }
+
+    public static Command getDistanceToGrid() {
+        return new InstantCommand(() -> m_VisionSubsystem.getDistanceToGrid());
     }
 }

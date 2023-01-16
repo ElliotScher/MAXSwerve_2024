@@ -33,11 +33,25 @@ public class DriveSubsystem extends SubsystemBase {
     private DifferentialDriveOdometry m_Odometry;
 
     public DriveSubsystem() {
-        m_LeftLeader = new CANSparkMax(1, MotorType.kBrushless);
-        m_RightLeader = new CANSparkMax(2, MotorType.kBrushless);
+        m_LeftLeader = new CANSparkMax(
+            1,
+            MotorType.kBrushless
+        );
 
-        m_LeftFollower = new CANSparkMax(3, MotorType.kBrushless);
-        m_RightFollower = new CANSparkMax(4, MotorType.kBrushless);
+        m_RightLeader = new CANSparkMax(
+            2,
+            MotorType.kBrushless
+        );
+
+        m_LeftFollower = new CANSparkMax(
+            3,
+            MotorType.kBrushless
+        );
+
+        m_RightFollower = new CANSparkMax(
+            4,
+            MotorType.kBrushless
+        );
 
         m_LeftFollower.follow(m_LeftLeader);
         m_RightFollower.follow(m_RightLeader);
@@ -58,12 +72,29 @@ public class DriveSubsystem extends SubsystemBase {
         m_IMU = new ADIS16470_IMU();
         m_IMU.calibrate();
 
-        m_PitchController = new PIDController(Constants.k_pPitch, Constants.k_iPitch, Constants.k_dPitch);
-        m_PitchController.setTolerance(0.1, 0.5);
+        m_PitchController = new PIDController(
+            Constants.k_pPitch,
+            Constants.k_iPitch,
+            Constants.k_dPitch
+        );
 
-        m_Drive = new DifferentialDrive(m_LeftLeader, m_RightLeader);
+        m_PitchController.setTolerance(
+            0.1,
+            0.5
+        );
+
+        m_Drive = new DifferentialDrive(
+            m_LeftLeader,
+            m_RightLeader
+        );
         m_Drive.setSafetyEnabled(false);
-        m_Odometry = new DifferentialDriveOdometry(new Rotation2d(m_IMU.getAngle()), m_LeftLeader.getEncoder().getPosition(), m_RightLeader.getEncoder().getPosition());
+        m_Odometry = new DifferentialDriveOdometry(
+            new Rotation2d(
+                m_IMU.getAngle()
+            ),
+            m_LeftLeader.getEncoder().getPosition(),
+            m_RightLeader.getEncoder().getPosition()
+        );
 
         resetEncoders();
         resetGyro();

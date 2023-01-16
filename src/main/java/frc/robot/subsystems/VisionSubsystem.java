@@ -28,10 +28,13 @@ public class VisionSubsystem extends SubsystemBase {
             PhotonTrackedTarget target = m_Result.getBestTarget();
             if (target.getFiducialId() == 7 || target.getFiducialId() == 2) {
                 distance = PhotonUtils.calculateDistanceToTargetMeters(
-                        Constants.k_CameraHeightMeters,
-                        Constants.k_GridAprilTagHeightMeters,
-                        Constants.k_CameraPitchRadians,
-                        Units.degreesToRadians(m_Result.getBestTarget().getPitch()));
+                    Constants.k_CameraHeightMeters,
+                    Constants.k_GridAprilTagHeightMeters,
+                    Constants.k_CameraPitchRadians,
+                    Units.degreesToRadians(
+                        m_Result.getBestTarget().getPitch()
+                    )
+                );
             }
         }
         System.out.println(distance);

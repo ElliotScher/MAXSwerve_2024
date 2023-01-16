@@ -72,7 +72,9 @@ public class DriveSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         m_Odometry.update(
-            new Rotation2d(m_IMU.getAngle()),
+            new Rotation2d(
+                m_IMU.getAngle()
+            ),
             m_LeftLeader.getEncoder().getPosition(),
             m_RightLeader.getEncoder().getPosition()
         );
@@ -93,7 +95,9 @@ public class DriveSubsystem extends SubsystemBase {
         resetEncoders();
         resetGyro();
         m_Odometry.resetPosition(
-            new Rotation2d(m_IMU.getAngle()),
+            new Rotation2d(
+                m_IMU.getAngle()
+            ),
             m_LeftLeader.getEncoder().getPosition(),
             m_RightLeader.getEncoder().getPosition(),
             pose

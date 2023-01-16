@@ -16,8 +16,12 @@ public class AutoRoutine extends SequentialCommandGroup {
 
     public void addCommands(AutoPath[] pathList) {
         for (AutoPath path: pathList) {
-            addCommands(path.getCommand());
-            m_PathList.add(path);
+            addCommands(
+                path.getCommand()
+            );
+            m_PathList.add(
+                path
+            );
         }
     }
     

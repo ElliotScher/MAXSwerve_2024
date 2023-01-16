@@ -5,7 +5,9 @@ import frc.robot.utilities.AutoRoutine;
 
 public class Mobility_ChargingStation extends AutoRoutine {
     private final AutoPath mPath1 = new AutoPath("paths/Mobility_ChargingStation.wpilib.json");
-    private final AutoPath[] mPathList = {mPath1};
+    private final AutoPath[] mPathList = {
+        mPath1
+    };
     
     public Mobility_ChargingStation() {
         super("Mobility_ChargingStation");

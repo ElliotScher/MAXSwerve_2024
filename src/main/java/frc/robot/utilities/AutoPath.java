@@ -31,15 +31,27 @@ public class AutoPath {
         m_Command = new RamseteCommand(
             m_Trajectory,
             DriveSubsystem.getInstance()::getPose,
-            new RamseteController(Constants.k_RamseteB, Constants.k_RamseteZeta),
+            new RamseteController(
+                Constants.k_RamseteB,
+                Constants.k_RamseteZeta
+            ),
             new SimpleMotorFeedforward(
                 Constants.k_sVolts,
                 Constants.k_vVoltSecondsPerMeter,
-                Constants.k_aVoltSecondsSquaredPerMeter),
+                Constants.k_aVoltSecondsSquaredPerMeter
+            ),
             Constants.k_DriveKinematics,
             DriveSubsystem.getInstance()::getWheelSpeeds,
-            new PIDController(Constants.k_pDriveVel, 0, 0),
-            new PIDController(Constants.k_pDriveVel, 0, 0),
+            new PIDController(
+                Constants.k_pDriveVel,
+                0,
+                0
+            ),
+            new PIDController(
+                Constants.k_pDriveVel,
+                0,
+                0
+            ),
             DriveSubsystem.getInstance()::tankDriveVolts,
             DriveSubsystem.getInstance()
         );
@@ -56,15 +68,26 @@ public class AutoPath {
         m_Command = new RamseteCommand(
                 m_Trajectory,
                 DriveSubsystem.getInstance()::getPose,
-                new RamseteController(Constants.k_RamseteB, Constants.k_RamseteZeta),
+                new RamseteController(
+                    Constants.k_RamseteB,
+                    Constants.k_RamseteZeta
+                ),
                 new SimpleMotorFeedforward(
                     Constants.k_sVolts,
                     Constants.k_vVoltSecondsPerMeter,
                     Constants.k_aVoltSecondsSquaredPerMeter),
                 Constants.k_DriveKinematics,
                 DriveSubsystem.getInstance()::getWheelSpeeds,
-                new PIDController(Constants.k_pDriveVel, 0, 0),
-                new PIDController(Constants.k_pDriveVel, 0, 0),
+                new PIDController(
+                    Constants.k_pDriveVel,
+                    0,
+                    0
+                ),
+                new PIDController(
+                    Constants.k_pDriveVel,
+                    0,
+                    0
+                ),
                 DriveSubsystem.getInstance()::tankDriveVolts,
                 DriveSubsystem.getInstance()
             )
@@ -82,15 +105,26 @@ public class AutoPath {
         m_Command = new RamseteCommand(
                 m_Trajectory,
                 DriveSubsystem.getInstance()::getPose,
-                new RamseteController(Constants.k_RamseteB, Constants.k_RamseteZeta),
+                new RamseteController(
+                    Constants.k_RamseteB,
+                    Constants.k_RamseteZeta
+                ),
                 new SimpleMotorFeedforward(
                     Constants.k_sVolts,
                     Constants.k_vVoltSecondsPerMeter,
                     Constants.k_aVoltSecondsSquaredPerMeter),
                 Constants.k_DriveKinematics,
                 DriveSubsystem.getInstance()::getWheelSpeeds,
-                new PIDController(Constants.k_pDriveVel, 0, 0),
-                new PIDController(Constants.k_pDriveVel, 0, 0),
+                new PIDController(
+                    Constants.k_pDriveVel,
+                    0,
+                    0
+                ),
+                new PIDController(
+                    Constants.k_pDriveVel,
+                    0,
+                    0
+                ),
                 DriveSubsystem.getInstance()::tankDriveVolts,
                 DriveSubsystem.getInstance()
             )
@@ -109,15 +143,26 @@ public class AutoPath {
         m_Command = new RamseteCommand(
                 m_Trajectory,
                 DriveSubsystem.getInstance()::getPose,
-                new RamseteController(Constants.k_RamseteB, Constants.k_RamseteZeta),
+                new RamseteController(
+                    Constants.k_RamseteB,
+                    Constants.k_RamseteZeta
+                ),
                 new SimpleMotorFeedforward(
                     Constants.k_sVolts,
                     Constants.k_vVoltSecondsPerMeter,
                     Constants.k_aVoltSecondsSquaredPerMeter),
                 Constants.k_DriveKinematics,
                 DriveSubsystem.getInstance()::getWheelSpeeds,
-                new PIDController(Constants.k_pDriveVel, 0, 0),
-                new PIDController(Constants.k_pDriveVel, 0, 0),
+                new PIDController(
+                    Constants.k_pDriveVel,
+                    0,
+                    0
+                ),
+                new PIDController(
+                    Constants.k_pDriveVel,
+                    0,
+                    0
+                ),
                 DriveSubsystem.getInstance()::tankDriveVolts,
                 DriveSubsystem.getInstance()
             )
@@ -127,7 +172,12 @@ public class AutoPath {
     }
 
     public Command getCommand() {
-        return m_Command.andThen(() -> m_DriveBase.tankDriveVolts(0, 0));
+        return m_Command.andThen(
+            () -> m_DriveBase.tankDriveVolts(
+                0,
+                0
+            )
+        );
     }
 
     public Pose2d getInitialPose() {

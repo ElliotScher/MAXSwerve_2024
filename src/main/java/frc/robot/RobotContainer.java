@@ -32,8 +32,14 @@ public class RobotContainer {
         for (AutoRoutine auto : m_AutoList) {
             m_AutoChooser.addOption(auto.getName(), auto);
         }
-        m_AutoChooser.setDefaultOption("ChargingStation", new ChargingStation());
-        SmartDashboard.putData("Autonomous Mode", m_AutoChooser);
+        m_AutoChooser.setDefaultOption(
+            "ChargingStation",
+            new ChargingStation()
+        );
+        SmartDashboard.putData(
+            "Autonomous Mode",
+            m_AutoChooser
+        );
         SmartDashboard.putData(m_Field);
     }
 

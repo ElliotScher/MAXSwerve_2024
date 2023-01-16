@@ -17,16 +17,21 @@ public final class CommandUtililty {
     private static final VisionSubsystem m_VisionSubsystem = VisionSubsystem.getInstance();
 
     public static CommandBase driveCommand(DoubleSupplier forward, DoubleSupplier turn) {
-        return new RunCommand(() -> m_DriveSubsystem.getDrive().arcadeDrive(
-            -forward.getAsDouble(),
-            turn.getAsDouble()
-        ));
+        return new RunCommand(
+            () -> m_DriveSubsystem.getDrive().arcadeDrive(
+                -forward.getAsDouble(),
+                turn.getAsDouble()
+            )
+        );
     }
 
     public static CommandBase balanceCommand() {
-        double output = m_DriveSubsystem.getPitchController().calculate(m_DriveSubsystem.getRobotPitch(), 0);
         return new RunCommand(
-            () -> m_DriveSubsystem.tankDrive(output)
+            () -> m_DriveSubsystem.tankDrive(
+                m_DriveSubsystem.getPitchController().calculate(
+                    m_DriveSubsystem.getRobotPitch(), 0
+                )
+            )
         ).until(
             () -> m_DriveSubsystem.getPitchController().atSetpoint()
         );
@@ -34,9 +39,13 @@ public final class CommandUtililty {
 
     public static Command testAuto() {
         if (m_DriveSubsystem.getRobotPitch() > 0.5) {
-            return new RunCommand(() -> m_DriveSubsystem.tankDrive(0.1));
+            return new RunCommand(
+                () -> m_DriveSubsystem.tankDrive(0.1)
+            );
         } else if (m_DriveSubsystem.getRobotPitch() < -0.5) {
-            return new RunCommand(() -> m_DriveSubsystem.tankDrive(-0.1));
+            return new RunCommand(
+                () -> m_DriveSubsystem.tankDrive(-0.1)
+            );
         } else {
             return new InstantCommand(() -> m_DriveSubsystem.tankDrive(0));
         }
@@ -44,8 +53,10 @@ public final class CommandUtililty {
 
     public static Command conditionalAuto() {
         return new ConditionalCommand(
-            new RunCommand(() -> m_DriveSubsystem.tankDrive(0.1)),
-            new RunCommand(() -> m_DriveSubsystem.tankDrive(-0.1)),
+            new RunCommand(
+                () -> m_DriveSubsystem.tankDrive(0.1)),
+            new RunCommand(
+                () -> m_DriveSubsystem.tankDrive(-0.1)),
             () -> (m_DriveSubsystem.getRobotPitch() > 0.5))
         .unless(
             () -> Math.abs(m_DriveSubsystem.getRobotPitch()) < 0.5
@@ -54,13 +65,18 @@ public final class CommandUtililty {
 
     public static Command aprilTagAuto() {
         return new ConditionalCommand(
-            new RunCommand(() -> m_DriveSubsystem.tankDrive(0.1)),
-            new RunCommand(() -> m_DriveSubsystem.tankDrive(-0.1)),
-            () -> (m_VisionSubsystem.getDistanceToGrid() == Constants.k_DistanceFromGridTagToChargingStation))
+            new RunCommand(
+                () -> m_DriveSubsystem.tankDrive(0.1)
+            ),
+            new RunCommand(
+                () -> m_DriveSubsystem.tankDrive(-0.1)
+            ),
+            () -> (m_VisionSubsystem.getDistanceToGrid() == Constants.k_DistanceFromGridTagToChargingStation)
+        )
         .unless(
             () -> (
-                Math.abs
-                    (m_VisionSubsystem.getDistanceToGrid()) < (Constants.k_DistanceFromGridTagToChargingStation + Units.inchesToMeters(1))
+                Math.abs(
+                    m_VisionSubsystem.getDistanceToGrid()) < (Constants.k_DistanceFromGridTagToChargingStation + Units.inchesToMeters(1))
                 &&
                 Math.abs(
                     m_VisionSubsystem.getDistanceToGrid()) > (Constants.k_DistanceFromGridTagToChargingStation - Units.inchesToMeters(1))
@@ -68,6 +84,8 @@ public final class CommandUtililty {
     }
 
     public static Command getDistanceToGrid() {
-        return new InstantCommand(() -> m_VisionSubsystem.getDistanceToGrid());
+        return new InstantCommand(
+            () -> m_VisionSubsystem.getDistanceToGrid()
+        );
     }
 }

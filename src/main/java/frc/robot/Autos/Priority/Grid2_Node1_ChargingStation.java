@@ -1,0 +1,16 @@
+package frc.robot.Autos.Priority;
+
+import frc.robot.utilities.AutoPath;
+import frc.robot.utilities.AutoRoutine;
+
+public class Grid2_Node1_ChargingStation extends AutoRoutine {
+    private final AutoPath m_Path1 = new AutoPath("paths/Grid2_Node1_ChargingStation.wpilib.json");
+    private final AutoPath[] m_PathList = {
+        m_Path1,
+    };
+    
+    public Grid2_Node1_ChargingStation() {
+        super("Grid2_Node1_ChargingStation");
+        addCommands(m_PathList);
+    }
+}

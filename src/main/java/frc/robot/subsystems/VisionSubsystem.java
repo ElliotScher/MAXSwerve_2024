@@ -41,6 +41,16 @@ public class VisionSubsystem extends SubsystemBase {
         return distance;
     }
 
+    public double getChargingStationPitch() {
+        if (m_Result.hasTargets()) {
+            PhotonTrackedTarget target = m_Result.getBestTarget();
+            if (target.getFiducialId() == 7 || target.getFiducialId() == 2) {
+                return target.getPitch();
+            }
+        }
+        return -1;
+    }
+
     public static VisionSubsystem getInstance() {
         if (m_Instance == null) {
             m_Instance = new VisionSubsystem();

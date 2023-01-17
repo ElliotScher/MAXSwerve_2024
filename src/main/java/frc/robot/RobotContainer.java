@@ -65,10 +65,6 @@ public class RobotContainer {
         m_Controller.a().onTrue(
             CommandUtililty.balanceCommand()
         );
-
-        m_Controller.b().onTrue(
-            CommandUtililty.getDistanceToGrid()
-        );
     }
 
     public Command getAutonomousCommand() {
@@ -80,6 +76,8 @@ public class RobotContainer {
         // ).andThen(
         //     m_AutoChooser.getSelected()
         // );
+
+        // return CommandUtility.aprilTagAuto();
         return CommandUtililty.conditionalAuto();
     }
 

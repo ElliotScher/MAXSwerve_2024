@@ -30,9 +30,9 @@ public final class Constants {
     public static final double k_aVoltSecondsSquaredPerMeter = 0.36127;
 
     public static final double k_pDriveVel = 0.0060339;
-    public static final double k_pPitch = 0;
-    public static final double k_iPitch = 0;
-    public static final double k_dPitch = 0;
+    public static final double k_pPitch = 0.005; // Make robot faster
+    public static final double k_iPitch = 0; // maybe add this
+    public static final double k_dPitch = 0; // see how this works
 
     public static final double k_TrackwidthMeters = Units.inchesToMeters(22);
     public static final DifferentialDriveKinematics k_DriveKinematics = new DifferentialDriveKinematics(k_TrackwidthMeters);

@@ -15,6 +15,8 @@ import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.ADIS16470_IMU;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -79,7 +81,7 @@ public class DriveSubsystem extends SubsystemBase {
         );
 
         m_PitchController.setTolerance(
-            0.1,
+            2.5,
             0.5
         );
 
@@ -109,6 +111,7 @@ public class DriveSubsystem extends SubsystemBase {
             m_LeftLeader.getEncoder().getPosition(),
             m_RightLeader.getEncoder().getPosition()
         );
+        SmartDashboard.putNumber("Pitch", getRobotPitch());
     }
 
     public Pose2d getPose() {
@@ -184,6 +187,10 @@ public class DriveSubsystem extends SubsystemBase {
 
     public PIDController getPitchController() {
         return m_PitchController;
+    }
+
+    public void run(Command command) {
+        run(command);
     }
 
     public static DriveSubsystem getInstance() {

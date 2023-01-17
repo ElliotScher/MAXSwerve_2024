@@ -41,9 +41,10 @@ public class RobotContainer {
         new Grid3_Node3_Node2(),
         new Grid3_Node3_Node2_Node1()
     };
+    private static Field2d m_Field = new Field2d();
     private final CommandXboxController m_Controller = new CommandXboxController(0);
     private final static SendableChooser<AutoRoutine> m_AutoChooser = new SendableChooser<AutoRoutine>();
-    private final static Field2d m_Field = new Field2d();
+
 
     public RobotContainer() {
         configureBindings();
@@ -65,6 +66,34 @@ public class RobotContainer {
         m_Controller.a().onTrue(
             CommandUtililty.balanceCommand()
         );
+
+        m_Controller.axisGreaterThan(1, 0).onTrue(
+            CommandUtililty.driveCommand(
+                () -> m_Controller.getLeftY(),
+                () -> m_Controller.getRightX()
+            )
+        );
+
+        m_Controller.axisLessThan(1, 0).onTrue(
+            CommandUtililty.driveCommand(
+                () -> m_Controller.getLeftY(),
+                () -> m_Controller.getRightX()
+            )
+        );
+
+        m_Controller.axisGreaterThan(4, 0).onTrue(
+            CommandUtililty.driveCommand(
+                () -> m_Controller.getLeftY(),
+                () -> m_Controller.getRightX()
+            )
+        );
+
+        m_Controller.axisLessThan(4, 0).onTrue(
+            CommandUtililty.driveCommand(
+                () -> m_Controller.getLeftY(),
+                () -> m_Controller.getRightX()
+            )
+        );
     }
 
     public Command getAutonomousCommand() {
@@ -78,7 +107,7 @@ public class RobotContainer {
         // );
 
         // return CommandUtility.aprilTagAuto();
-        return CommandUtililty.conditionalAuto();
+        return null;
     }
 
     public static Field2d getField() {

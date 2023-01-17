@@ -16,8 +16,8 @@ public final class CommandUtililty {
     public static CommandBase driveCommand(DoubleSupplier forward, DoubleSupplier turn) {
         return new RunCommand(
             () -> m_DriveSubsystem.getDrive().arcadeDrive(
-                -forward.getAsDouble(),
-                turn.getAsDouble()
+                -turn.getAsDouble(),
+                forward.getAsDouble()
             )
         );
     }
@@ -26,7 +26,7 @@ public final class CommandUtililty {
         return new RunCommand(
             () -> m_DriveSubsystem.tankDrive(
                 m_DriveSubsystem.getPitchController().calculate(
-                    m_DriveSubsystem.getRobotPitch(),
+                    -m_DriveSubsystem.getRobotPitch(),
                     0
                 )
             )
@@ -35,16 +35,14 @@ public final class CommandUtililty {
         );
     }
 
-    public static Command conditionalAuto() {
-        return new ConditionalCommand(
-            new RunCommand(
-                () -> m_DriveSubsystem.tankDrive(0.1)),
-            new RunCommand(
-                () -> m_DriveSubsystem.tankDrive(-0.1)),
-            () -> (m_DriveSubsystem.getRobotPitch() > 0.5))
-        .unless(
-            () -> Math.abs(m_DriveSubsystem.getRobotPitch()) < 0.5
-        );
+    public static void conditionalAuto() {
+        if (m_DriveSubsystem.getRobotPitch() < -0.5) {
+            m_DriveSubsystem.tankDrive(-0.1);
+        } else if (m_DriveSubsystem.getRobotPitch() > 0.5) {
+            m_DriveSubsystem.tankDrive(0.1);
+        } else {
+            m_DriveSubsystem.tankDrive(0);
+        }
     }
 
     public static Command aprilTagAuto() {

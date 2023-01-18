@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Autos.Grid1.Grid1_Node1_Intake_ChargingStation;
 import frc.robot.Autos.Grid1.Grid1_Node1_Node2;
@@ -43,6 +44,7 @@ public class RobotContainer {
     };
     private static Field2d m_Field = new Field2d();
     private final CommandXboxController m_Controller = new CommandXboxController(0);
+    private final CommandJoystick m_Joystick = new CommandJoystick(1);
     private final static SendableChooser<AutoRoutine> m_AutoChooser = new SendableChooser<AutoRoutine>();
 
 
@@ -63,10 +65,52 @@ public class RobotContainer {
     }
 
     private void configureBindings() {
+
+        // Buttons
         m_Controller.a().onTrue(
             CommandUtililty.balanceCommand()
         );
 
+        m_Joystick.button(8).onTrue(
+            CommandUtililty.topNode()
+        );
+
+        m_Joystick.button(10).onTrue(
+            CommandUtililty.midNode()
+        );
+
+        m_Joystick.button(12).onTrue(
+            CommandUtililty.topNode()
+        );
+
+        m_Joystick.button(1).onTrue(
+            CommandUtililty.resetTelevator()
+        );
+
+        // Elevator and Telescope Axis
+        m_Joystick.axisGreaterThan(1, 0).onTrue(
+            CommandUtililty.moveX(
+                m_Joystick.getRawAxis(1)
+            )
+        );
+        m_Joystick.axisLessThan(1, 0).onTrue(
+            CommandUtililty.moveX(
+                m_Joystick.getRawAxis(1)
+            )
+        );
+
+        m_Joystick.axisGreaterThan(0, 0).onTrue(
+            CommandUtililty.moveX(
+                m_Joystick.getRawAxis(0)
+            )
+        );
+        m_Joystick.axisLessThan(0, 0).onTrue(
+            CommandUtililty.moveX(
+                m_Joystick.getRawAxis(0)
+            )
+        );
+
+        // Drive Axis
         m_Controller.axisGreaterThan(1, 0).onTrue(
             CommandUtililty.driveCommand(
                 () -> m_Controller.getLeftY(),

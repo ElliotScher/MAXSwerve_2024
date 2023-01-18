@@ -11,6 +11,18 @@ import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstrai
 import edu.wpi.first.math.util.Units;
 
 public final class Constants {
+    // Actuator Constants
+    public static final int k_LeftDriveLeaderID = 1;
+    public static final int k_LeftDriveFollowerID = 3;
+    public static final int k_RightDriveLeaderID = 2;
+    public static final int k_RightDriveFollowerID = 4;
+
+    public static final int k_ElevatorLeaderID = 0;
+    public static final int k_ElevatorFollowerID = 0;
+
+    public static final int k_TelescopeID = 0;
+    
+    // Trajectory Constants
     public static final double k_WheelDiameter = Units.inchesToMeters(6);
     public static final double k_GearBoxRatio = 7.31;
     public static final double k_PositionConversionFactor = (
@@ -30,9 +42,6 @@ public final class Constants {
     public static final double k_aVoltSecondsSquaredPerMeter = 0.36127;
 
     public static final double k_pDriveVel = 0.0060339;
-    public static final double k_pPitch = 0.005; // Make robot faster
-    public static final double k_iPitch = 0; // maybe add this
-    public static final double k_dPitch = 0; // see how this works
 
     public static final double k_TrackwidthMeters = Units.inchesToMeters(22);
     public static final DifferentialDriveKinematics k_DriveKinematics = new DifferentialDriveKinematics(k_TrackwidthMeters);
@@ -53,9 +62,25 @@ public final class Constants {
         .setKinematics(Constants.k_DriveKinematics)
         .addConstraint(Constants.k_AutoVoltageConstraint);
 
-    // vision constants
+
+    // Pitch Constants
+    public static final double k_pPitch = 0.005; // Make robot faster
+    public static final double k_iPitch = 0; // maybe add this
+    public static final double k_dPitch = 0; // see how this works
+
+    // Vision Constants
     public static final double k_CameraHeightMeters = Units.inchesToMeters(21.75);
     public static final double k_GridAprilTagHeightMeters = 0.38;
     public static final double k_CameraPitchRadians = 0;
     public static final double k_DistanceFromGridTagToChargingStation = Units.inchesToMeters(112.81);
+
+    // Elevator Constants
+    public static final double k_ElevatorLowNodeSetpoint = 0;
+    public static final double k_ElevatorMidNodeSetpoint = 0;
+    public static final double k_ElevatorTopNodeSetpoint = 0;
+
+    // Telescope Constants
+    public static final double k_TelescopeLowNodeSetpoint = 0;
+    public static final double k_TelescopeMidNodeSetpoint = 0;
+    public static final double k_TelescopeTopNodeSetpoint = 0;
 }

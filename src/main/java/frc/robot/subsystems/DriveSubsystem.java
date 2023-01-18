@@ -36,22 +36,21 @@ public class DriveSubsystem extends SubsystemBase {
 
     public DriveSubsystem() {
         m_LeftLeader = new CANSparkMax(
-            1,
+            Constants.k_LeftDriveLeaderID,
             MotorType.kBrushless
         );
 
         m_RightLeader = new CANSparkMax(
-            2,
+            Constants.k_RightDriveLeaderID,
             MotorType.kBrushless
         );
-
         m_LeftFollower = new CANSparkMax(
-            3,
+            Constants.k_LeftDriveFollowerID,
             MotorType.kBrushless
         );
 
         m_RightFollower = new CANSparkMax(
-            4,
+            Constants.k_RightDriveFollowerID,
             MotorType.kBrushless
         );
 

@@ -3,17 +3,20 @@ package frc.robot.utilities;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.TelevatorSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 
 public final class CommandUtililty {
     private static final DriveSubsystem m_DriveSubsystem = DriveSubsystem.getInstance();
     private static final VisionSubsystem m_VisionSubsystem = VisionSubsystem.getInstance();
+    private static final TelevatorSubsystem m_TelevatorSubsystem = TelevatorSubsystem.getInstance();
 
-    public static CommandBase driveCommand(DoubleSupplier forward, DoubleSupplier turn) {
+    public static Command driveCommand(DoubleSupplier forward, DoubleSupplier turn) {
         return new RunCommand(
             () -> m_DriveSubsystem.getDrive().arcadeDrive(
                 -turn.getAsDouble(),
@@ -22,7 +25,7 @@ public final class CommandUtililty {
         );
     }
 
-    public static CommandBase balanceCommand() {
+    public static Command balanceCommand() {
         return new RunCommand(
             () -> m_DriveSubsystem.tankDrive(
                 m_DriveSubsystem.getPitchController().calculate(
@@ -33,16 +36,6 @@ public final class CommandUtililty {
         ).until(
             () -> m_DriveSubsystem.getPitchController().atSetpoint()
         );
-    }
-
-    public static void conditionalAuto() {
-        if (m_DriveSubsystem.getRobotPitch() < -0.5) {
-            m_DriveSubsystem.tankDrive(-0.1);
-        } else if (m_DriveSubsystem.getRobotPitch() > 0.5) {
-            m_DriveSubsystem.tankDrive(0.1);
-        } else {
-            m_DriveSubsystem.tankDrive(0);
-        }
     }
 
     public static Command aprilTagAuto() {
@@ -56,6 +49,62 @@ public final class CommandUtililty {
             () -> (m_VisionSubsystem.getChargingStationPitch() > 0)
         ).unless(
             () -> (Math.abs(m_VisionSubsystem.getChargingStationPitch()) < 0.5)
+        );
+    }
+
+    public static Command moveX(double speed) {
+        return new InstantCommand(
+            () -> m_TelevatorSubsystem.moveXAxis(speed)
+        );
+    }
+
+    public static Command moveY(double speed) {
+        return new InstantCommand(
+            () -> m_TelevatorSubsystem.moveYAxis(speed)
+        );
+    }
+
+    public static Command lowNode() {
+        return new ParallelCommandGroup(
+            new RunCommand(
+                () -> m_TelevatorSubsystem.elevatorLowNode()
+            ),
+            new RunCommand(
+                () -> m_TelevatorSubsystem.telescopeLowNode()
+            )
+        );
+    }
+
+    public static Command midNode() {
+        return new ParallelCommandGroup(
+            new RunCommand(
+                () -> m_TelevatorSubsystem.elevatorMidNode()
+            ),
+            new RunCommand(
+                () -> m_TelevatorSubsystem.telescopeMidNode()
+            )
+        );
+    }
+
+    public static Command topNode() {
+        return new ParallelCommandGroup(
+            new RunCommand(
+                () -> m_TelevatorSubsystem.elevatorTopNode()
+            ),
+            new RunCommand(
+                () -> m_TelevatorSubsystem.telescopeTopNode()
+            )
+        );
+    }
+
+    public static Command resetTelevator() {
+        return new ParallelCommandGroup(
+            new RunCommand(
+                () -> m_TelevatorSubsystem.elevatorReset()
+            ),
+            new RunCommand(
+                () -> m_TelevatorSubsystem.telescopeReset()
+            )
         );
     }
 }

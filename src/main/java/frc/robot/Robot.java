@@ -4,9 +4,13 @@
 
 package frc.robot;
 
+import java.util.List;
+
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.utilities.AutoPath;
+import frc.robot.utilities.AutoRoutine;
 
 public class Robot extends TimedRobot {
     private Command m_autonomousCommand;
@@ -31,7 +35,25 @@ public class Robot extends TimedRobot {
 
     @Override
     public void disabledPeriodic() {
-        
+        for (AutoRoutine routine : RobotContainer.getAutoList()) {
+            RobotContainer.getField().getObject(
+                routine.getTrajectories().toString()
+            ).setPoses(
+                List.of()
+            );
+        }
+        for (AutoPath path: RobotContainer.getChooser().getSelected().getTrajectories()) {
+            RobotContainer.getField().getObject(
+                path.toString()
+            )
+            .setTrajectory(
+                path.getTrajectory()
+            );
+        }
+        RobotContainer.getField().setRobotPose(
+            RobotContainer.getChooser().getSelected().getInitialPose()
+        );
+
     }
 
     @Override

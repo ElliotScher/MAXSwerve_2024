@@ -25,7 +25,7 @@ import frc.robot.utilities.AutoRoutine;
 import frc.robot.utilities.CommandUtililty;
 
 public class RobotContainer {
-    private final AutoRoutine[] m_AutoList = {
+    private static final AutoRoutine[] m_AutoList = {
         // Priority
         new ChargingStation(),
         new Mobility_ChargingStation(),
@@ -116,5 +116,9 @@ public class RobotContainer {
 
     public static SendableChooser <AutoRoutine> getChooser() {
         return m_AutoChooser;
+    }
+
+    public static AutoRoutine[] getAutoList() {
+        return m_AutoList;
     }
 }

@@ -41,6 +41,25 @@ public class VisionSubsystem extends SubsystemBase {
         return distance;
     }
 
+    public double getDistanceToGridDynamicPitch() {
+        double distance = -1;
+        if (m_Result.hasTargets()) {
+            PhotonTrackedTarget target = m_Result.getBestTarget();
+            if (target.getFiducialId() == 7 || target.getFiducialId() == 2) {
+                distance = PhotonUtils.calculateDistanceToTargetMeters(
+                    Constants.k_CameraHeightMeters,
+                    Constants.k_GridAprilTagHeightMeters,
+                    getChargingStationPitch(),
+                    Units.degreesToRadians(
+                        m_Result.getBestTarget().getPitch()
+                    )
+                );
+            }
+        }
+        System.out.println(distance);
+        return distance;
+    }
+
     public double getChargingStationPitch() {
         if (m_Result.hasTargets()) {
             PhotonTrackedTarget target = m_Result.getBestTarget();
@@ -50,6 +69,7 @@ public class VisionSubsystem extends SubsystemBase {
         }
         return -1;
     }
+    
 
     public static VisionSubsystem getInstance() {
         if (m_Instance == null) {

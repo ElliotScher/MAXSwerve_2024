@@ -71,19 +71,19 @@ public class RobotContainer {
             CommandUtililty.balanceCommand()
         );
 
-        m_Joystick.button(8).onTrue(
+        m_Joystick.button(8).whileTrue(
             CommandUtililty.topNode()
         );
 
-        m_Joystick.button(10).onTrue(
+        m_Joystick.button(10).whileTrue(
             CommandUtililty.midNode()
         );
 
-        m_Joystick.button(12).onTrue(
+        m_Joystick.button(12).whileTrue(
             CommandUtililty.topNode()
         );
 
-        m_Joystick.button(1).onTrue(
+        m_Joystick.button(1).whileTrue(
             CommandUtililty.resetTelevator()
         );
 

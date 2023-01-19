@@ -1,35 +1,37 @@
 package frc.robot.utilities;
 
-import java.util.ArrayList;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 public class AutoRoutine extends SequentialCommandGroup {
-    private ArrayList<AutoPath> m_PathList;
+    protected AutoPath[] m_PathList;
     private String m_Name;
 
-    public AutoRoutine(String name) {
+    public AutoRoutine(String name, AutoPath[] blueList, AutoPath[] redList) {
         m_Name = name;
-        m_PathList = new ArrayList<AutoPath>();
+        // if fms says blue alliance {
+        //     m_PathList = blueList
+        // } else {
+        //     m_PathList = redList
+        // }
     }
 
     public void addCommands(AutoPath[] pathList) {
+        int i = 0;
         for (AutoPath path: pathList) {
             addCommands(
                 path.getCommand()
             );
-            m_PathList.add(
-                path
-            );
+            m_PathList[i] = path;
+            i++;
         }
     }
     
     public Pose2d getInitialPose() {
-        return m_PathList.get(0).getInitialPose();
+        return m_PathList[0].getInitialPose();
     }
 
-    public ArrayList<AutoPath> getTrajectories() {
+    public AutoPath[] getTrajectories() {
         return m_PathList;
     }
 

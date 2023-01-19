@@ -57,7 +57,7 @@ public class AutoPath {
         );
     }
 
-    public AutoPath(String jsonPath, Command additionalCommand) {
+    public AutoPath(String jsonPath, Command onCompletion) {
         try {
             Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(jsonPath);
             m_Trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
@@ -91,10 +91,10 @@ public class AutoPath {
                 DriveSubsystem.getInstance()::tankDriveVolts,
                 DriveSubsystem.getInstance()
             )
-            .alongWith(additionalCommand);
+            .andThen(onCompletion);
     }
 
-    public AutoPath(String jsonPath, Command beforeStarting, Command additionalCommand) {
+    public AutoPath(String jsonPath, Command beforeStarting, Command onCompletion) {
         try {
             Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(jsonPath);
             m_Trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
@@ -128,8 +128,8 @@ public class AutoPath {
                 DriveSubsystem.getInstance()::tankDriveVolts,
                 DriveSubsystem.getInstance()
             )
-            .alongWith(additionalCommand)
-            .beforeStarting(beforeStarting);
+            .beforeStarting(beforeStarting)
+            .andThen(onCompletion);
     }
 
     public AutoPath(String jsonPath, Command beforeStarting, Command additionalCommand, Command onCompletion) {

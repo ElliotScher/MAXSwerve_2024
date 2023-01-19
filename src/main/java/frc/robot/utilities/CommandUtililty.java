@@ -52,6 +52,14 @@ public final class CommandUtililty {
         );
     }
 
+    public static Command autoCommand(AutoRoutine auto) {
+        return new InstantCommand(
+            () -> m_DriveSubsystem.resetOdometry(auto.getInitialPose())
+        ).andThen(
+            auto
+        );
+    }
+
     public static Command moveX(double speed) {
         return new InstantCommand(
             () -> m_TelevatorSubsystem.moveXAxis(speed)

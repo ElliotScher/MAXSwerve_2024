@@ -2,6 +2,7 @@ package frc.robot.Autos.Priority;
 
 import frc.robot.utilities.AutoPath;
 import frc.robot.utilities.AutoRoutine;
+import frc.robot.utilities.CommandUtililty;
 
 public class Mobility_ChargingStation extends AutoRoutine {
     private final AutoPath m_Path1 = new AutoPath("paths/Mobility_ChargingStation.wpilib.json");
@@ -12,5 +13,6 @@ public class Mobility_ChargingStation extends AutoRoutine {
     public Mobility_ChargingStation() {
         super("Mobility_ChargingStation");
         addCommands(m_PathList);
+        addCommands(CommandUtililty.balanceCommand());
     }
 }

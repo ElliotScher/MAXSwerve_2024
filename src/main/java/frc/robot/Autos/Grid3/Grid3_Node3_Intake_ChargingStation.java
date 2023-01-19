@@ -2,6 +2,7 @@ package frc.robot.Autos.Grid3;
 
 import frc.robot.utilities.AutoPath;
 import frc.robot.utilities.AutoRoutine;
+import frc.robot.utilities.CommandUtililty;
 
 public class Grid3_Node3_Intake_ChargingStation extends AutoRoutine{
     private final AutoPath m_Path1 = new AutoPath("paths/1_Grid3_Node3_Intake_ChargingStation.wpilib.json");
@@ -14,5 +15,6 @@ public class Grid3_Node3_Intake_ChargingStation extends AutoRoutine{
     public Grid3_Node3_Intake_ChargingStation() {
         super("Grid3_Node3_Intake_ChargingStation");
         addCommands(m_PathList);
+        addCommands(CommandUtililty.balanceCommand());
     }
 }

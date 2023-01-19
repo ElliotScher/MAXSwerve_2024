@@ -141,17 +141,9 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        // return new InstantCommand(
-        //     () -> m_DriveBase.resetOdometry(
-        //         m_AutoChooser.getSelected().getInitialPose()
-        //     ),
-        //     m_DriveBase
-        // ).andThen(
-        //     m_AutoChooser.getSelected()
-        // );
-
-        // return CommandUtility.aprilTagAuto();
-        return null;
+        return CommandUtililty.autoCommand(
+            m_AutoChooser.getSelected()
+        );
     }
 
     public static Field2d getField() {

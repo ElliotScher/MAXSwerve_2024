@@ -68,7 +68,7 @@ public class RobotContainer {
         return m_Field;
     }
 
-    public static SendableChooser <AutoRoutine> getChooser() {
+    public static SendableChooser<AutoRoutine> getChooser() {
         return m_AutoChooser;
     }
 

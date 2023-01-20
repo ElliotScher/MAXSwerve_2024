@@ -88,15 +88,23 @@ public class RobotContainer {
         );
 
         // Elevator and Telescope Axis
-        m_Joystick.axisGreaterThan(1, 0).onTrue(
-            CommandUtililty.moveX(
-                m_Joystick.getRawAxis(1)
-            )
+        // m_Joystick.axisGreaterThan(1, 0).onTrue(
+        //     CommandUtililty.moveX(
+        //         m_Joystick.getRawAxis(1)
+        //     )
+        // );
+        // m_Joystick.axisLessThan(1, 0).onTrue(
+        //     CommandUtililty.moveX(
+        //         m_Joystick.getRawAxis(1)
+        //     )
+        // );
+
+        m_Controller.axisGreaterThan(2, 0).whileTrue(
+            CommandUtililty.moveX(m_Controller.getLeftTriggerAxis())
         );
-        m_Joystick.axisLessThan(1, 0).onTrue(
-            CommandUtililty.moveX(
-                m_Joystick.getRawAxis(1)
-            )
+
+        m_Controller.axisGreaterThan(3, 0).whileTrue(
+            CommandUtililty.moveX(-m_Controller.getRightTriggerAxis())
         );
 
         m_Joystick.axisGreaterThan(0, 0).onTrue(

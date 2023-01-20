@@ -1,6 +1,8 @@
 package frc.robot.utilities;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 public class AutoRoutine extends SequentialCommandGroup {
@@ -9,11 +11,13 @@ public class AutoRoutine extends SequentialCommandGroup {
 
     public AutoRoutine(String name, AutoPath[] blueList, AutoPath[] redList) {
         m_Name = name;
-        // if fms says blue alliance {
-        //     m_PathList = blueList
-        // } else {
-        //     m_PathList = redList
-        // }
+        if (DriverStation.getAlliance() == Alliance.Blue) {
+            m_PathList = blueList;
+        } else if (DriverStation.getAlliance() == Alliance.Red) {
+            m_PathList = redList;
+        } else {
+            m_PathList = null;
+        }
     }
 
     public void addCommands(AutoPath[] pathList) {

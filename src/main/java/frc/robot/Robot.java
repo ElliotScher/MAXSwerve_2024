@@ -4,17 +4,17 @@
 
 package frc.robot;
 
-import java.util.List;
-
+import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.utilities.AutoPath;
 import frc.robot.utilities.AutoRoutine;
 
 public class Robot extends TimedRobot {
     private Command m_autonomousCommand;
     private RobotContainer m_robotContainer;
+    private Trajectory m_Trajectory;
 
     @Override
     public void robotInit() {
@@ -35,25 +35,18 @@ public class Robot extends TimedRobot {
 
     @Override
     public void disabledPeriodic() {
-        for (AutoRoutine routine : RobotContainer.getAutoList()) {
-            RobotContainer.getField().getObject(
-                routine.getTrajectories().toString()
-            ).setPoses(
-                List.of()
-            );
+        SendableChooser<AutoRoutine> chooser = RobotContainer.getChooser();
+        m_Trajectory = RobotContainer.getChooser().getSelected().getTrajectories()[0].getTrajectory();
+        for (int i = 1; i < chooser.getSelected().getTrajectories().length; i++) {
+            m_Trajectory = m_Trajectory.concatenate(RobotContainer.getChooser().getSelected().getTrajectories()[i].getTrajectory());
         }
-        for (AutoPath path: RobotContainer.getChooser().getSelected().getTrajectories()) {
-            RobotContainer.getField().getObject(
-                path.toString()
-            )
-            .setTrajectory(
-                path.getTrajectory()
-            );
-        }
-        RobotContainer.getField().setRobotPose(
-            RobotContainer.getChooser().getSelected().getInitialPose()
+        RobotContainer.getField().getObject(
+            "traj"
+        )
+        .setTrajectory(
+            m_Trajectory
         );
-
+        RobotContainer.getChooser().close();
     }
 
     @Override

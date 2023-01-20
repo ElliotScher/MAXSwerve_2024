@@ -63,14 +63,27 @@ public class RobotContainer {
         );
         SmartDashboard.putData(m_Field);
     }
+    
+    public static Field2d getField() {
+        return m_Field;
+    }
+
+    public static SendableChooser <AutoRoutine> getChooser() {
+        return m_AutoChooser;
+    }
+
+    public static AutoRoutine[] getAutoList() {
+        return m_AutoList;
+    }
 
     private void configureBindings() {
 
-        // Buttons
+        // XboxController Buttons
         m_Controller.a().onTrue(
             CommandUtililty.balanceCommand()
         );
 
+        // Joystick Buttons
         m_Joystick.button(8).whileTrue(
             CommandUtililty.topNode()
         );
@@ -83,39 +96,22 @@ public class RobotContainer {
             CommandUtililty.topNode()
         );
 
-        m_Joystick.button(1).whileTrue(
+        m_Joystick.button(11).whileTrue(
             CommandUtililty.resetTelevator()
         );
 
-        // Elevator and Telescope Axis
-        // m_Joystick.axisGreaterThan(1, 0).onTrue(
-        //     CommandUtililty.moveX(
-        //         m_Joystick.getRawAxis(1)
-        //     )
-        // );
-        // m_Joystick.axisLessThan(1, 0).onTrue(
-        //     CommandUtililty.moveX(
-        //         m_Joystick.getRawAxis(1)
-        //     )
-        // );
-
-        m_Controller.axisGreaterThan(2, 0).whileTrue(
-            CommandUtililty.moveX(m_Controller.getLeftTriggerAxis())
+        // Elevator and Telescope adjust
+        m_Joystick.povUp().whileTrue(
+            CommandUtililty.moveY(1)
         );
-
-        m_Controller.axisGreaterThan(3, 0).whileTrue(
-            CommandUtililty.moveX(-m_Controller.getRightTriggerAxis())
+        m_Joystick.povDown().whileTrue(
+            CommandUtililty.moveY(-1)
         );
-
-        m_Joystick.axisGreaterThan(0, 0).onTrue(
-            CommandUtililty.moveX(
-                m_Joystick.getRawAxis(0)
-            )
+        m_Joystick.povUp().and(m_Joystick.button(3)).whileTrue(
+            CommandUtililty.moveX(1)
         );
-        m_Joystick.axisLessThan(0, 0).onTrue(
-            CommandUtililty.moveX(
-                m_Joystick.getRawAxis(0)
-            )
+        m_Joystick.povDown().and(m_Joystick.button(3)).whileTrue(
+            CommandUtililty.moveY(-1)
         );
 
         // Drive Axis
@@ -152,17 +148,5 @@ public class RobotContainer {
         return CommandUtililty.autoCommand(
             m_AutoChooser.getSelected()
         );
-    }
-
-    public static Field2d getField() {
-        return m_Field;
-    }
-
-    public static SendableChooser <AutoRoutine> getChooser() {
-        return m_AutoChooser;
-    }
-
-    public static AutoRoutine[] getAutoList() {
-        return m_AutoList;
     }
 }

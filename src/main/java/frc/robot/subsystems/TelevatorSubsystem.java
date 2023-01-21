@@ -20,13 +20,12 @@ public class TelevatorSubsystem extends SubsystemBase {
     public TelevatorSubsystem() {
         m_ElevatorLeader = new CANSparkMax(Constants.k_ElevatorLeaderID, MotorType.kBrushless);
         m_ElevatorFollower = new CANSparkMax(Constants.k_ElevatorFollowerID, MotorType.kBrushless);
+        m_Telescope = new CANSparkMax(Constants.k_TelescopeID, MotorType.kBrushless);
 
         m_ElevatorFollower.follow(m_ElevatorLeader);
 
         m_ElevatorEncoder = m_ElevatorLeader.getEncoder();
         m_TelescopeEncoder = m_Telescope.getEncoder();
-
-        m_Telescope = new CANSparkMax(Constants.k_TelescopeID, MotorType.kBrushless);
     }
 
     public void moveYAxis(double speed) {

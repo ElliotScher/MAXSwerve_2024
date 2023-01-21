@@ -18,10 +18,10 @@ public final class Constants {
     public static final int k_RightDriveLeaderID = 2;
     public static final int k_RightDriveFollowerID = 4;
 
-    public static final int k_ElevatorLeaderID = 0;
-    public static final int k_ElevatorFollowerID = 0;
+    public static final int k_ElevatorLeaderID = 6;
+    public static final int k_ElevatorFollowerID = 7;
 
-    public static final int k_TelescopeID = 0;
+    public static final int k_TelescopeID = 5;
     
     // Trajectory Constants
     public static final double k_WheelDiameter = Units.inchesToMeters(6);

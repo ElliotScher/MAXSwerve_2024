@@ -57,11 +57,7 @@ public class RobotContainer {
             "ChargingStation",
             new ChargingStation()
         );
-        SmartDashboard.putData(
-            "Autonomous Mode",
-            m_AutoChooser
-        );
-        SmartDashboard.putData(m_Field);
+        putData();
     }
     
     public static Field2d getField() {
@@ -74,6 +70,11 @@ public class RobotContainer {
 
     public static AutoRoutine[] getAutoList() {
         return m_AutoList;
+    }
+
+    public static void putData() {
+        SmartDashboard.putData("Autonomous Mode", m_AutoChooser);
+        SmartDashboard.putData("Field", m_Field);
     }
 
     private void configureBindings() {

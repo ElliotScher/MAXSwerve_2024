@@ -10,37 +10,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.Autos.Grid1.Grid1_Node1_Intake_ChargingStation;
-import frc.robot.Autos.Grid1.Grid1_Node1_Node2;
-import frc.robot.Autos.Grid1.Grid1_Node1_Node2_Node3;
-import frc.robot.Autos.Grid2.Grid2_Node1_Intake_ChargingStation;
-import frc.robot.Autos.Grid2.Grid2_Node3_Intake_ChargingStation;
-import frc.robot.Autos.Grid3.Grid3_Node3_Intake_ChargingStation;
-import frc.robot.Autos.Grid3.Grid3_Node3_Node2;
-import frc.robot.Autos.Grid3.Grid3_Node3_Node2_Node1;
 import frc.robot.Autos.Priority.ChargingStation;
-import frc.robot.Autos.Priority.Grid2_Node1_ChargingStation;
-import frc.robot.Autos.Priority.Grid2_Node1_Mobility_ChargingStation;
-import frc.robot.Autos.Priority.Mobility_ChargingStation;
 import frc.robot.utilities.AutoRoutine;
 import frc.robot.utilities.CommandUtililty;
 
 public class RobotContainer {
     private static final AutoRoutine[] m_AutoList = {
         // Priority
-        new ChargingStation(),
-        new Mobility_ChargingStation(),
-        new Grid2_Node1_ChargingStation(),
-        new Grid2_Node1_Mobility_ChargingStation(),
-        // Non-Priority
-        new Grid1_Node1_Intake_ChargingStation(),
-        new Grid1_Node1_Node2(),
-        new Grid1_Node1_Node2_Node3(),
-        new Grid2_Node1_Intake_ChargingStation(),
-        new Grid2_Node3_Intake_ChargingStation(),
-        new Grid3_Node3_Intake_ChargingStation(),
-        new Grid3_Node3_Node2(),
-        new Grid3_Node3_Node2_Node1()
+        new ChargingStation()
     };
     private static Field2d m_Field = new Field2d();
     private final CommandXboxController m_Controller = new CommandXboxController(0);

@@ -9,7 +9,6 @@ import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.math.util.Units;
-import frc.robot.utilities.AutoPath;
 
 public final class Constants {
     // Actuator Constants
@@ -83,103 +82,4 @@ public final class Constants {
     public static final double k_TelescopeLowNodeSetpoint = 0;
     public static final double k_TelescopeMidNodeSetpoint = 0;
     public static final double k_TelescopeTopNodeSetpoint = 0;
-
-    // Pathweaver JSON Paths
-    public static final AutoPath[] k_Grid1_Node1_Intake_ChargingStation_Blue = {
-        new AutoPath("paths/1_Grid1_Node1_Intake_ChargingStation_Blue.wpilib.json"),
-        new AutoPath("paths/2_Grid1_Node1_Intake_ChargingStation_Blue.wpilib.json")
-    };
-    public static final AutoPath[] k_Grid1_Node1_Intake_ChargingStation_Red = { // THIS TRAJECTORY HAS NOT YET BEEN CREATED
-        new AutoPath("paths/1_Grid1_Node1_Intake_ChargingStation_Red.wpilib.json"),
-        new AutoPath("paths/2_Grid1_Node1_Intake_ChargingStation_Red.wpilib.json")
-    };
-    public static final AutoPath[] k_Grid1_Node1_Node2_Node3_Blue = {
-        new AutoPath("paths/1_Grid1_Node1_Node2_Node3_Blue.wpilib.json"),
-        new AutoPath("paths/2_Grid1_Node1_Node2_Node3_Blue.wpilib.json"),
-        new AutoPath("paths/3_Grid1_Node1_Node2_Node3_Blue.wpilib.json"),
-        new AutoPath("paths/4_Grid1_Node1_Node2_Node3_Blue.wpilib.json")
-    };
-    public static final AutoPath[] k_Grid1_Node1_Node2_Node3_Red = {
-        new AutoPath("paths/1_Grid1_Node1_Node2_Node3_Red.wpilib.json"),
-        new AutoPath("paths/2_Grid1_Node1_Node2_Node3_Red.wpilib.json"),
-        new AutoPath("paths/3_Grid1_Node1_Node2_Node3_Red.wpilib.json"),
-        new AutoPath("paths/4_Grid1_Node1_Node2_Node3_Red.wpilib.json")
-    };
-    public static final AutoPath[] k_Grid1_Node1_Node2_Blue = {
-        new AutoPath("paths/1_Grid1_Node1_Node2_Blue.wpilib.json"),
-        new AutoPath("paths/2_Grid1_Node1_Node2_Blue.wpilib.json")
-    };
-    public static final AutoPath[] k_Grid1_Node1_Node2_Red = {
-        new AutoPath("paths/1_Grid1_Node1_Node2_Red.wpilib.json"),
-        new AutoPath("paths/2_Grid1_Node1_Node2_Red.wpilib.json")
-    };
-    public static final AutoPath[] k_Grid2_Node1_Intake_ChargingStation_Blue = {
-        new AutoPath("paths/1_Grid2_Node1_Intake_ChargingStation_Blue.wpilib.json"),
-        new AutoPath("paths/2_Grid2_Node1_Intake_ChargingStation_Blue.wpilib.json")
-    };
-    public static final AutoPath[] k_Grid2_Node1_Intake_ChargingStation_Red = {
-        new AutoPath("paths/1_Grid2_Node1_Intake_ChargingStation_Red.wpilib.json"),
-        new AutoPath("paths/2_Grid2_Node1_Intake_ChargingStation_Red.wpilib.json")
-    };
-    public static final AutoPath[] k_Grid2_Node3_Intake_ChargingStation_Blue = {
-        new AutoPath("paths/1_Grid2_Node1_Intake_ChargingStation_Blue.wpilib.json"),
-        new AutoPath("paths/2_Grid2_Node1_Intake_ChargingStation_Blue.wpilib.json")
-    };
-    public static final AutoPath[] k_Grid2_Node3_Intake_ChargingStation_Red = {
-        new AutoPath("paths/1_Grid2_Node3_Intake_ChargingStation_Red.wpilib.json"),
-        new AutoPath("paths/2_Grid2_Node3_Intake_ChargingStation_Red.wpilib.json")
-    };
-    public static final AutoPath[] k_Grid3_Node3_Intake_ChargingStation_Blue = {
-        new AutoPath("paths/1_Grid3_Node3_Intake_ChargingStation_Blue.wpilib.json"),
-        new AutoPath("paths/2_Grid3_Node3_Intake_ChargingStation_Blue.wpilib.json")
-    };
-    public static final AutoPath[] k_Grid3_Node3_Intake_ChargingStation_Red = {
-        new AutoPath("paths/1_Grid3_Node3_Intake_ChargingStation_Red.wpilib.json"),
-        new AutoPath("paths/2_Grid3_Node3_Intake_ChargingStation_Red.wpilib.json")
-    };
-    public static final AutoPath[] k_Grid3_Node3_Node2_Node1_Blue = {
-        new AutoPath("paths/1_Grid3_Node3_Node2_Node1_Blue.wpilib.json"),
-        new AutoPath("paths/2_Grid3_Node3_Node2_Node1_Blue.wpilib.json"),
-        new AutoPath("paths/3_Grid3_Node3_Node2_Node1_Blue.wpilib.json"),
-        new AutoPath("paths/4_Grid3_Node3_Node2_Node1_Blue.wpilib.json")
-    };
-    public static final AutoPath[] k_Grid3_Node3_Node2_Node1_Red = {
-        new AutoPath("paths/1_Grid3_Node3_Node2_Node1_Red.wpilib.json"),
-        new AutoPath("paths/2_Grid3_Node3_Node2_Node1_Red.wpilib.json"),
-        new AutoPath("paths/3_Grid3_Node3_Node2_Node1_Red.wpilib.json"),
-        new AutoPath("paths/4_Grid3_Node3_Node2_Node1_Red.wpilib.json")
-    };
-    public static final AutoPath[] k_Grid3_Node3_Node2_Blue = {
-        new AutoPath("paths/1_Grid3_Node3_Node2_Blue.wpilib.json"),
-        new AutoPath("paths/2_Grid3_Node3_Node2_Blue.wpilib.json")
-    };
-    public static final AutoPath[] k_Grid3_Node3_Node2_Red = {
-        new AutoPath("paths/1_Grid3_Node3_Node2_Red.wpilib.json"),
-        new AutoPath("paths/2_Grid3_Node3_Node2_Red.wpilib.json")
-    };
-    public static final AutoPath[] k_ChargingStation_Blue = {
-        new AutoPath("paths/ChargingStation_Blue.wpilib.json")
-    };
-    public static final AutoPath[] k_ChargingStation_Red = {
-        new AutoPath("paths/ChargingStation_Red.wpilib.json")
-    };
-    public static final AutoPath[] k_Mobility_ChargingStation_Blue = {
-        new AutoPath("paths/Mobility_ChargingStation_Blue.wpilib.json")
-    };
-    public static final AutoPath[] k_Mobility_ChargingStation_Red = {
-        new AutoPath("paths/Mobility_ChargingStation_Red.wpilib.json")
-    };
-    public static final AutoPath[] k_Grid2_Node1_ChargingStation_Blue = {
-        new AutoPath("paths/Grid2_Node1_ChargingStation_Blue.wpilib.json")
-    };
-    public static final AutoPath[] k_Grid2_Node1_ChargingStation_Red = {
-        new AutoPath("paths/Grid2_Node1_ChargingStation_Red.wpilib.json")
-    };
-    public static final AutoPath[] k_Grid2_Node1_Mobility_ChargingStation_Blue = {
-        new AutoPath("paths/Grid2_Node1_Mobility_ChargingStation_Blue.wpilib.json")
-    };
-    public static final AutoPath[] k_Grid2_Node1_Mobility_ChargingStation_Red = {
-        new AutoPath("paths/Grid2_Node1_Mobility_ChargingStation_Red.wpilib.json")
-    };
-
 }

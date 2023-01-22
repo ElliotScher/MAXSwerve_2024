@@ -30,6 +30,7 @@ public class DriveSubsystem extends SubsystemBase {
 
     private ADIS16470_IMU m_IMU;
     private PIDController m_PitchController;
+    private PIDController m_AprilTagDistanceController;
 
     private DifferentialDrive m_Drive;
     private DifferentialDriveOdometry m_Odometry;
@@ -77,6 +78,12 @@ public class DriveSubsystem extends SubsystemBase {
             Constants.k_pPitch,
             Constants.k_iPitch,
             Constants.k_dPitch
+        );
+
+        m_AprilTagDistanceController = new PIDController(
+            Constants.k_PDistance,
+            Constants.k_IDistance,
+            Constants.k_DDistance
         );
 
         m_PitchController.setTolerance(
@@ -186,6 +193,10 @@ public class DriveSubsystem extends SubsystemBase {
 
     public PIDController getPitchController() {
         return m_PitchController;
+    }
+
+    public PIDController getAprilTagDistanceController() {
+        return m_AprilTagDistanceController;
     }
 
     public void run(Command command) {

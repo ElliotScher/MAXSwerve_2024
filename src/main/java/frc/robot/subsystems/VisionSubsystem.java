@@ -46,17 +46,12 @@ public class VisionSubsystem extends SubsystemBase {
         if (m_Result.hasTargets()) {
             PhotonTrackedTarget target = m_Result.getBestTarget();
             if (target.getFiducialId() == 7 || target.getFiducialId() == 2) {
-                distance = PhotonUtils.calculateDistanceToTargetMeters(
-                    Constants.k_CameraHeightMeters,
-                    Constants.k_GridAprilTagHeightMeters,
-                    getChargingStationPitch(),
-                    Units.degreesToRadians(
-                        m_Result.getBestTarget().getPitch()
-                    )
-                );
+                target.getBestCameraToTarget().getX();
             }
         }
-        System.out.println(distance);
+        if (distance != -1) {
+            // perform unit conversion of distance to meters.
+        }
         return distance;
     }
 

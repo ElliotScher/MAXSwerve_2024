@@ -67,6 +67,11 @@ public final class Constants {
     public static final double k_iPitch = 0; // maybe add this
     public static final double k_dPitch = 0; // see how this works
 
+    // DriveToDistance Constants
+    public static final double k_PDistance = 0;
+    public static final double k_IDistance = 0;
+    public static final double k_DDistance = 0;
+
     // Vision Constants
     public static final double k_CameraHeightMeters = Units.inchesToMeters(21.75);
     public static final double k_GridAprilTagHeightMeters = 0.38;

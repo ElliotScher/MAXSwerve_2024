@@ -13,6 +13,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.ADIS16470_IMU;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -98,7 +99,7 @@ public class DriveSubsystem extends SubsystemBase {
         m_Drive.setSafetyEnabled(false);
         m_Odometry = new DifferentialDriveOdometry(
             new Rotation2d(
-                m_IMU.getAngle()
+                Units.degreesToRadians(m_IMU.getAngle())
             ),
             m_LeftLeader.getEncoder().getPosition(),
             m_RightLeader.getEncoder().getPosition()
@@ -112,7 +113,7 @@ public class DriveSubsystem extends SubsystemBase {
     public void periodic() {
         m_Odometry.update(
             new Rotation2d(
-                m_IMU.getAngle()
+                Units.degreesToRadians(m_IMU.getAngle())
             ),
             m_LeftLeader.getEncoder().getPosition(),
             m_RightLeader.getEncoder().getPosition()
@@ -136,7 +137,7 @@ public class DriveSubsystem extends SubsystemBase {
         resetGyro();
         m_Odometry.resetPosition(
             new Rotation2d(
-                m_IMU.getAngle()
+                Units.degreesToRadians(m_IMU.getAngle())
             ),
             m_LeftLeader.getEncoder().getPosition(),
             m_RightLeader.getEncoder().getPosition(),

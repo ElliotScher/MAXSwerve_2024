@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -21,8 +22,9 @@ public class TelevatorSubsystem extends SubsystemBase {
         m_ElevatorLeader = new CANSparkMax(Constants.k_ElevatorLeaderID, MotorType.kBrushless);
         m_ElevatorFollower = new CANSparkMax(Constants.k_ElevatorFollowerID, MotorType.kBrushless);
         m_Telescope = new CANSparkMax(Constants.k_TelescopeID, MotorType.kBrushless);
+        m_Telescope.setIdleMode(IdleMode.kBrake);
 
-        m_ElevatorFollower.follow(m_ElevatorLeader);
+        m_ElevatorFollower.follow(m_ElevatorLeader, true);
 
         m_ElevatorEncoder = m_ElevatorLeader.getEncoder();
         m_TelescopeEncoder = m_Telescope.getEncoder();

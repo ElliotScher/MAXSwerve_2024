@@ -9,6 +9,7 @@ import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public final class Constants {
     // Actuator Constants
@@ -37,11 +38,11 @@ public final class Constants {
     public static final double k_RamseteB = 2;
     public static final double k_RamseteZeta = 0.7;
 
-    public static final double k_sVolts = 0.08134;
-    public static final double k_vVoltSecondsPerMeter = 2.0181;
-    public static final double k_aVoltSecondsSquaredPerMeter = 0.36127;
+    public static final double k_sVolts = 0.1877;
+    public static final double k_vVoltSecondsPerMeter = 1.7616;
+    public static final double k_aVoltSecondsSquaredPerMeter = 0.6554;
 
-    public static final double k_pDriveVel = 0.0060339;
+    public static final double k_pDriveVel = 0.0036916;
 
     public static final double k_TrackwidthMeters = Units.inchesToMeters(22);
     public static final DifferentialDriveKinematics k_DriveKinematics = new DifferentialDriveKinematics(k_TrackwidthMeters);
@@ -63,9 +64,9 @@ public final class Constants {
         .addConstraint(Constants.k_AutoVoltageConstraint);
 
     // Pitch Constants
-    public static final double k_pPitch = 0.005; // Make robot faster
-    public static final double k_iPitch = 0; // maybe add this
-    public static final double k_dPitch = 0; // see how this works
+    public static final double k_pPitch = SmartDashboard.getNumber("k_PPitch", 0.005); // Make robot faster
+    public static final double k_iPitch = SmartDashboard.getNumber("k_IPitch", 0); // maybe add this
+    public static final double k_dPitch = SmartDashboard.getNumber("k_DPitch", 0); // see how this works
 
     // DriveToDistance Constants
     public static final double k_PDistance = 0;

@@ -5,7 +5,9 @@
 package frc.robot;
 
 import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -16,6 +18,7 @@ public class Robot extends TimedRobot {
     private Command m_autonomousCommand;
     private RobotContainer m_robotContainer;
     private Trajectory m_Trajectory;
+    private Alliance m_LastAlliance;
 
     @Override
     public void robotInit() {
@@ -42,8 +45,12 @@ public class Robot extends TimedRobot {
 
     @Override
     public void disabledPeriodic() {
+        if (DriverStation.getAlliance() != (m_LastAlliance)) {
+            RobotContainer.resetList();
+        }
+        m_LastAlliance = DriverStation.getAlliance();
         SendableChooser<AutoRoutine> chooser = RobotContainer.getChooser();
-        m_Trajectory = RobotContainer.getChooser().getSelected().getTrajectories()[0].getTrajectory();
+        m_Trajectory = chooser.getSelected().getTrajectories()[0].getTrajectory();
         for (int i = 1; i < chooser.getSelected().getTrajectories().length; i++) {
             m_Trajectory = m_Trajectory.concatenate(RobotContainer.getChooser().getSelected().getTrajectories()[i].getTrajectory());
         }

@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Autos.Grid1.Grid1_Node1_Intake_ChargingStation;
@@ -21,6 +22,8 @@ import frc.robot.Autos.Priority.ChargingStation;
 import frc.robot.Autos.Priority.Grid2_Node1_ChargingStation;
 import frc.robot.Autos.Priority.Grid2_Node1_Mobility_ChargingStation;
 import frc.robot.Autos.Priority.Mobility_ChargingStation;
+import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.utilities.AutoPath;
 import frc.robot.utilities.AutoRoutine;
 import frc.robot.utilities.CommandUtililty;
 
@@ -44,18 +47,15 @@ public class RobotContainer {
     private static Field2d m_Field = new Field2d();
     private final CommandXboxController m_Controller = new CommandXboxController(0);
     private final CommandJoystick m_Joystick = new CommandJoystick(1);
-    private final static SendableChooser<AutoRoutine> m_AutoChooser = new SendableChooser<AutoRoutine>();
+    private static SendableChooser<AutoRoutine> m_AutoChooser = new SendableChooser<AutoRoutine>();
 
     public RobotContainer() {
         configureBindings();
-        for (AutoRoutine auto : m_AutoList) {
-            m_AutoChooser.addOption(auto.getName(), auto);
-        }
-        m_AutoChooser.setDefaultOption(
-            "ChargingStation",
-            new ChargingStation()
-        );
+        resetList();
         putData();
+        SmartDashboard.putNumber("k_PPitch", 0);
+        SmartDashboard.putNumber("k_IPItch", 0);
+        SmartDashboard.putNumber("k_DPitch", 0);
     }
     
     public static Field2d getField() {
@@ -70,6 +70,33 @@ public class RobotContainer {
         return m_AutoList;
     }
 
+    public static void resetList() {
+        AutoRoutine[] autoList = {
+            // Priority
+            new ChargingStation(),
+            new Mobility_ChargingStation(),
+            new Grid2_Node1_ChargingStation(),
+            new Grid2_Node1_Mobility_ChargingStation(),
+            // Non-Priority
+            new Grid1_Node1_Intake_ChargingStation(),
+            new Grid1_Node1_Node2(),
+            new Grid1_Node1_Node2_Node3(),
+            new Grid2_Node1_Intake_ChargingStation(),
+            new Grid2_Node1_Intake_ChargingStation(),
+            new Grid3_Node3_Intake_ChargingStation(),
+            new Grid3_Node3_Node2(),
+            new Grid3_Node3_Node2_Node1()
+        };
+        for (AutoRoutine auto : autoList) {
+            m_AutoChooser.addOption(auto.getName(), auto);
+        }
+        m_AutoChooser.setDefaultOption(
+            "ChargingStation",
+            new ChargingStation()
+        );
+        SmartDashboard.putNumber("rotation2d", new ChargingStation().getInitialPose().getRotation().getRadians());
+    }
+
     public static void putData() {
         SmartDashboard.putData("Autonomous Mode", m_AutoChooser);
         SmartDashboard.putData("Field", m_Field);
@@ -77,7 +104,7 @@ public class RobotContainer {
 
     private void configureBindings() {
 
-        // XboxController Buttons
+        // MISC Buttons
         m_Controller.a().onTrue(
             CommandUtililty.balanceCommand()
         );
@@ -100,17 +127,15 @@ public class RobotContainer {
         );
 
         // Elevator and Telescope adjust
-        m_Joystick.povUp().whileTrue(
-            CommandUtililty.moveY(1)
+        m_Controller.leftBumper().onTrue(
+            CommandUtililty.moveY(0.1)
+        ).onFalse(
+            CommandUtililty.moveY(0)
         );
-        m_Joystick.povDown().whileTrue(
-            CommandUtililty.moveY(-1)
-        );
-        m_Joystick.povUp().and(m_Joystick.button(3)).whileTrue(
-            CommandUtililty.moveX(1)
-        );
-        m_Joystick.povDown().and(m_Joystick.button(3)).whileTrue(
-            CommandUtililty.moveY(-1)
+        m_Controller.rightBumper().onTrue(
+            CommandUtililty.moveY(-0.1)
+        ).onFalse(
+            CommandUtililty.moveY(0)
         );
 
         // Drive Axis
@@ -144,8 +169,10 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        return CommandUtililty.autoCommand(
-            m_AutoChooser.getSelected()
-        );
+        // return CommandUtililty.autoCommand(
+        //     m_AutoChooser.getSelected()
+        // );
+        AutoPath path = new AutoPath("paths/Test.wpilib.json");
+        return path.getCommand().beforeStarting(() -> DriveSubsystem.getInstance().resetOdometry(path.getInitialPose()));
     }
 }

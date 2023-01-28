@@ -2,6 +2,8 @@ package frc.robot.utilities;
 
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
@@ -42,7 +44,7 @@ public final class CommandUtililty {
         return new RunCommand(
             () -> m_DriveSubsystem.tankDrive(
                 m_DriveSubsystem.getAprilTagDistanceController().calculate(
-                    m_VisionSubsystem.getDistanceToGridDynamicPitch(),
+                    m_VisionSubsystem.getDistanceToGrid(),
                     Constants.k_DistanceFromGridTagToChargingStation
                 )
             )
@@ -57,7 +59,7 @@ public final class CommandUtililty {
         return new RunCommand(
             () -> m_DriveSubsystem.tankDrive(
                 m_DriveSubsystem.getAprilTagDistanceController().calculate(
-                    m_VisionSubsystem.getDistanceToGridDynamicPitch(),
+                    m_VisionSubsystem.getDistanceToGrid(),
                     Constants.k_DistanceFromGridTagToChargingStation
                 )
             )
@@ -68,8 +70,11 @@ public final class CommandUtililty {
 
     public static Command autoCommand(AutoRoutine auto) {
         return new InstantCommand(
-            () -> m_DriveSubsystem.resetOdometry(auto.getInitialPose())
-        ).andThen(
+            () -> m_DriveSubsystem.resetOdometry(
+                auto.getInitialPose()
+            )
+        )
+        .andThen(
             auto
         );
     }

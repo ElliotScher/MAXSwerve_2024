@@ -96,11 +96,12 @@ public class DriveSubsystem extends SubsystemBase {
             m_LeftLeader,
             m_RightLeader
         );
-        m_Drive.setSafetyEnabled(false);
+        m_Drive.setSafetyEnabled(false); // try that for fixing the turning problem in autos
         m_Odometry = new DifferentialDriveOdometry(
-            new Rotation2d(
-                Units.degreesToRadians(m_IMU.getAngle())
-            ),
+            // new Rotation2d(
+            //     Units.degreesToRadians(m_IMU.getAngle())
+            // ),
+            new Rotation2d(0),
             m_LeftLeader.getEncoder().getPosition(),
             m_RightLeader.getEncoder().getPosition()
         );

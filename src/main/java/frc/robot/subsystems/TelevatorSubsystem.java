@@ -23,6 +23,8 @@ public class TelevatorSubsystem extends SubsystemBase {
         m_ElevatorFollower = new CANSparkMax(Constants.k_ElevatorFollowerID, MotorType.kBrushless);
         m_Telescope = new CANSparkMax(Constants.k_TelescopeID, MotorType.kBrushless);
         m_Telescope.setIdleMode(IdleMode.kBrake);
+        m_ElevatorLeader.setIdleMode(IdleMode.kBrake);
+        m_ElevatorFollower.setIdleMode(IdleMode.kBrake);
 
         m_ElevatorFollower.follow(m_ElevatorLeader, true);
 

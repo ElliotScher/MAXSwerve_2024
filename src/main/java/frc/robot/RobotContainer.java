@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Autos.Grid1.Grid1_Node1_Intake_ChargingStation;
@@ -94,7 +93,6 @@ public class RobotContainer {
             "ChargingStation",
             new ChargingStation()
         );
-        SmartDashboard.putNumber("rotation2d", new ChargingStation().getInitialPose().getRotation().getRadians());
     }
 
     public static void putData() {
@@ -128,12 +126,12 @@ public class RobotContainer {
 
         // Elevator and Telescope adjust
         m_Controller.leftBumper().onTrue(
-            CommandUtililty.moveY(0.1)
+            CommandUtililty.moveY(1)
         ).onFalse(
             CommandUtililty.moveY(0)
         );
         m_Controller.rightBumper().onTrue(
-            CommandUtililty.moveY(-0.1)
+            CommandUtililty.moveY(-1)
         ).onFalse(
             CommandUtililty.moveY(0)
         );

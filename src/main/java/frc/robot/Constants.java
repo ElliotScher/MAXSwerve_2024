@@ -14,14 +14,28 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public final class Constants {
     // Actuator Constants
     public static final int k_LeftDriveLeaderID = 1;
-    public static final int k_LeftDriveFollowerID = 3;
+    public static final int k_LeftDriveFollower1ID = 3;
+    // public static final int k_LeftDriveFollower2ID = 5;
     public static final int k_RightDriveLeaderID = 2;
-    public static final int k_RightDriveFollowerID = 4;
+    public static final int k_RightDriveFollower1ID = 4;
+    // public static final int k_RightDriveFollower2ID = 6;
+
+    public static final int k_TelescopeID = 5;
+    // public static final int k_TelescopeID = 7;
 
     public static final int k_ElevatorLeaderID = 6;
     public static final int k_ElevatorFollowerID = 7;
+    // public static final int k_ElevatorLeaderID = 8;
+    // public static final int k_ElevatorFollowerID = 9;
 
-    public static final int k_TelescopeID = 5;
+    public static final int k_IntakeLeaderID = 8;
+    public static final int k_IntakeFollowerID = 9;
+    // public static final int k_IntakeLeaderID = 10;
+    // public static final int k_IntakeFollowerID = 11;
+
+    public static final int k_WristID = 10;
+    // public static final int k_WristID = 12;
+
     
     // Trajectory Constants
     public static final double k_WheelDiameter = Units.inchesToMeters(6);

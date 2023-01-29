@@ -96,16 +96,14 @@ public class DriveSubsystem extends SubsystemBase {
             m_LeftLeader,
             m_RightLeader
         );
-        m_Drive.setSafetyEnabled(false); // try that for fixing the turning problem in autos
+        m_Drive.setSafetyEnabled(false);
         m_Odometry = new DifferentialDriveOdometry(
-            // new Rotation2d(
-            //     Units.degreesToRadians(m_IMU.getAngle())
-            // ),
-            new Rotation2d(0),
+            new Rotation2d(
+                Units.degreesToRadians(m_IMU.getAngle())
+            ),
             m_LeftLeader.getEncoder().getPosition(),
             m_RightLeader.getEncoder().getPosition()
         );
-
         resetEncoders();
         resetGyro();
     }
@@ -135,7 +133,6 @@ public class DriveSubsystem extends SubsystemBase {
 
     public void resetOdometry(Pose2d pose) {
         resetEncoders();
-        resetGyro();
         m_Odometry.resetPosition(
             new Rotation2d(
                 Units.degreesToRadians(m_IMU.getAngle())

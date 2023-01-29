@@ -1,5 +1,4 @@
+0. test autonomous modes
 1. get gyroscope balancing faster
 2. make apriltag distance measurements more accurate (convert measured distance to meters if needed)
 3. use distance from apriltag for autos with gyroscope as backup
-4. tune trajectory constants with sysid
-5. test elevator and telescope

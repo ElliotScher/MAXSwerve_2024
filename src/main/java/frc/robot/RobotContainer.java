@@ -21,8 +21,6 @@ import frc.robot.Autos.Priority.ChargingStation;
 import frc.robot.Autos.Priority.Grid2_Node1_ChargingStation;
 import frc.robot.Autos.Priority.Grid2_Node1_Mobility_ChargingStation;
 import frc.robot.Autos.Priority.Mobility_ChargingStation;
-import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.utilities.AutoPath;
 import frc.robot.utilities.AutoRoutine;
 import frc.robot.utilities.CommandUtililty;
 
@@ -167,10 +165,8 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        // return CommandUtililty.autoCommand(
-        //     m_AutoChooser.getSelected()
-        // );
-        AutoPath path = new AutoPath("paths/Test.wpilib.json");
-        return path.getCommand().beforeStarting(() -> DriveSubsystem.getInstance().resetOdometry(path.getInitialPose()));
+        return CommandUtililty.autoCommand(
+            m_AutoChooser.getSelected()
+        );
     }
 }

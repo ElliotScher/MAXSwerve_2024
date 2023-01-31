@@ -102,6 +102,7 @@ public class DriveSubsystem extends SubsystemBase {
             m_RightLeader.getEncoder().getPosition()
         );
         resetEncoders();
+        resetGyro();
     }
 
     @Override

@@ -13,6 +13,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -128,9 +129,10 @@ public class DriveSubsystem extends SubsystemBase {
 
     public void resetOdometry(Pose2d pose) {
         resetEncoders();
-        m_IMU.reset(pose.getRotation().getRadians());
         m_Odometry.resetPosition(
-            Rotation2d.fromDegrees(m_IMU.getAngle()),
+            new Rotation2d(
+                Units.degreesToRadians(m_IMU.getAngle())
+            ), // or if this doesn't work, just set this value to pose.getRotation()
             m_LeftLeader.getEncoder().getPosition(),
             m_RightLeader.getEncoder().getPosition(),
             pose

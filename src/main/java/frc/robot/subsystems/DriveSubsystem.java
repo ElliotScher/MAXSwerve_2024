@@ -5,7 +5,6 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.REVPhysicsSim;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -14,18 +13,9 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
-import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.ADIS16470_IMU;
-import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.simulation.ADIS16470_IMUSim;
-import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim;
-import edu.wpi.first.wpilibj.simulation.SimDeviceSim;
-import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim.KitbotGearing;
-import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim.KitbotMotor;
-import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim.KitbotWheelSize;
-import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -40,29 +30,13 @@ public class DriveSubsystem extends SubsystemBase {
     private CANSparkMax m_RightFollower;
 
     private ADIS16470_IMU m_IMU;
-    private ADIS16470_IMUSim m_IMUSim;
     private PIDController m_PitchController;
     private PIDController m_AprilTagDistanceController;
 
     private DifferentialDrive m_Drive;
-    private DifferentialDrivetrainSim m_DriveSim = DifferentialDrivetrainSim.createKitbotSim(
-        KitbotMotor.kDoubleNEOPerSide, // 2 CIMs per side.
-        KitbotGearing.k7p31,        // 10.71:1
-        KitbotWheelSize.kSixInch,    // 6" diameter wheels.
-        null                         // No measurement noise.
-    );
     private DifferentialDriveOdometry m_Odometry;
 
-    private Field2d m_Field;
-
-    private SimDeviceSim leftSparkSim = new SimDeviceSim("SPARK MAX [1]");
-    private SimDeviceSim rightSparkSim = new SimDeviceSim("SPARK MAX [2]");
-
     public DriveSubsystem() {
-        REVPhysicsSim.getInstance().addSparkMax(m_LeftLeader, DCMotor.getNEO(1));
-        REVPhysicsSim.getInstance().addSparkMax(m_RightLeader, DCMotor.getNEO(1));
-        REVPhysicsSim.getInstance().addSparkMax(m_LeftFollower, DCMotor.getNEO(1));
-        REVPhysicsSim.getInstance().addSparkMax(m_RightFollower, DCMotor.getNEO(1));
         m_LeftLeader = new CANSparkMax(
             Constants.k_LeftDriveLeaderID,
             MotorType.kBrushless
@@ -99,7 +73,6 @@ public class DriveSubsystem extends SubsystemBase {
         m_RightFollower.setIdleMode(IdleMode.kBrake);
 
         m_IMU = new ADIS16470_IMU();
-        m_IMUSim = new ADIS16470_IMUSim(m_IMU);
         m_IMU.calibrate();
 
         m_PitchController = new PIDController(
@@ -131,38 +104,16 @@ public class DriveSubsystem extends SubsystemBase {
         );
         resetEncoders();
         resetGyro();
-        m_Field = new Field2d();
-        SmartDashboard.putData("Field", m_Field);
     }
 
     @Override
     public void periodic() {
-        REVPhysicsSim.getInstance().run();
         m_Odometry.update(
             Rotation2d.fromDegrees(m_IMU.getAngle()),
             m_LeftLeader.getEncoder().getPosition(),
             m_RightLeader.getEncoder().getPosition()
         );
         SmartDashboard.putNumber("Pitch", getRobotPitch());
-        m_Field.setRobotPose(m_Odometry.getPoseMeters());
-    }
-
-    @Override
-    public void simulationPeriodic() {
-        m_DriveSim.setInputs(
-            m_LeftLeader.get() * RobotController.getInputVoltage(),
-            m_RightLeader.get() * RobotController.getInputVoltage()
-        );
-
-        m_DriveSim.update(0.02);
-        leftSparkSim.getDouble(leftSparkSim.getName() + "-Position").set(m_DriveSim.getLeftPositionMeters());
-        leftSparkSim.getDouble(leftSparkSim.getName() + "-Velocity").set(m_DriveSim.getLeftVelocityMetersPerSecond());
-        rightSparkSim.getDouble(rightSparkSim.getName() + "-Position").set(m_DriveSim.getLeftPositionMeters());
-        rightSparkSim.getDouble(rightSparkSim.getName() + "-Velocity").set(m_DriveSim.getLeftVelocityMetersPerSecond());
-        m_IMUSim.setGyroAngleX(-m_DriveSim.getHeading().getDegrees());
-        m_Field.setRobotPose(m_Odometry.getPoseMeters());
-
-        REVPhysicsSim.getInstance().run();
     }
 
     public Pose2d getPose() {

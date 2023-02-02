@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.REVPhysicsSim;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -13,10 +14,11 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.ADIS16470_IMU;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -36,7 +38,10 @@ public class DriveSubsystem extends SubsystemBase {
     private DifferentialDrive m_Drive;
     private DifferentialDriveOdometry m_Odometry;
 
+
     public DriveSubsystem() {
+        REVPhysicsSim.getInstance().addSparkMax(m_LeftLeader, DCMotor.getNEO(2));
+        REVPhysicsSim.getInstance().addSparkMax(m_RightLeader, DCMotor.getNEO(2));
         m_LeftLeader = new CANSparkMax(
             Constants.k_LeftDriveLeaderID,
             MotorType.kBrushless
@@ -98,7 +103,7 @@ public class DriveSubsystem extends SubsystemBase {
         );
         m_Drive.setSafetyEnabled(false);
         m_Odometry = new DifferentialDriveOdometry(
-            Rotation2d.fromDegrees(m_IMU.getAngle()),
+            Rotation2d.fromDegrees(getHeading()),
             m_LeftLeader.getEncoder().getPosition(),
             m_RightLeader.getEncoder().getPosition()
         );
@@ -109,12 +114,12 @@ public class DriveSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         m_Odometry.update(
-            Rotation2d.fromDegrees(m_IMU.getAngle()),
+            Rotation2d.fromDegrees(getHeading()),
             m_LeftLeader.getEncoder().getPosition(),
             m_RightLeader.getEncoder().getPosition()
         );
-        SmartDashboard.putNumber("Pitch", getRobotPitch());
     }
+
 
     public Pose2d getPose() {
         return m_Odometry.getPoseMeters();
@@ -129,10 +134,11 @@ public class DriveSubsystem extends SubsystemBase {
 
     public void resetOdometry(Pose2d pose) {
         resetEncoders();
+        resetGyro();
         m_Odometry.resetPosition(
             new Rotation2d(
-                Units.degreesToRadians(m_IMU.getAngle())
-            ), // or if this doesn't work, just set this value to pose.getRotation()
+                Units.degreesToRadians(getHeading())
+            ),
             m_LeftLeader.getEncoder().getPosition(),
             m_RightLeader.getEncoder().getPosition(),
             pose
@@ -146,14 +152,14 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     public void tankDrive(double speed) {
-        m_LeftLeader.set(speed);
-        m_RightLeader.set(-speed);
+        m_LeftLeader.set(-speed / RobotController.getInputVoltage());
+        m_RightLeader.set(speed / RobotController.getInputVoltage());
         m_Drive.feed();
     }
 
     public void tankDrive(double left, double right) {
-        m_LeftLeader.set(left);
-        m_RightLeader.set(-right);
+        m_LeftLeader.set(left / RobotController.getInputVoltage());
+        m_RightLeader.set(right / RobotController.getInputVoltage());
         m_Drive.feed();
     }
 
@@ -171,7 +177,7 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     public double getHeading() {
-        return m_IMU.getAngle();
+        return -m_IMU.getAngle() % 360;
     }
 
     public double getTurnRate() {

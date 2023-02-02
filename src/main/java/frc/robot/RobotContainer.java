@@ -21,6 +21,7 @@ import frc.robot.Autos.Priority.ChargingStation;
 import frc.robot.Autos.Priority.Grid2_Node1_ChargingStation;
 import frc.robot.Autos.Priority.Grid2_Node1_Mobility_ChargingStation;
 import frc.robot.Autos.Priority.Mobility_ChargingStation;
+import frc.robot.Autos.Priority.Test;
 import frc.robot.utilities.AutoRoutine;
 import frc.robot.utilities.CommandUtililty;
 
@@ -31,6 +32,7 @@ public class RobotContainer {
         new Mobility_ChargingStation(),
         new Grid2_Node1_ChargingStation(),
         new Grid2_Node1_Mobility_ChargingStation(),
+        new Test(),
         // Non-Priority
         new Grid1_Node1_Intake_ChargingStation(),
         new Grid1_Node1_Node2(),
@@ -74,6 +76,7 @@ public class RobotContainer {
             new Mobility_ChargingStation(),
             new Grid2_Node1_ChargingStation(),
             new Grid2_Node1_Mobility_ChargingStation(),
+            new Test(),
             // Non-Priority
             new Grid1_Node1_Intake_ChargingStation(),
             new Grid1_Node1_Node2(),

@@ -9,10 +9,12 @@ import frc.robot.utilities.CommandUtililty;
 public class Test extends AutoRoutine {
     private AutoPath[] m_PathList;
     private final AutoPath[] m_BlueList = {
-        new AutoPath("paths/Test.wpilib.json")
+        new AutoPath("paths/1_Test_Blue.wpilib.json"),
+        new AutoPath("paths/2_Test_Blue.wpilib.json")
     };
     public final AutoPath[] m_RedList = {
-        new AutoPath("paths/Test.wpilib.json")
+        new AutoPath("paths/1_Test_Red.wpilib.json"),
+        new AutoPath("paths/2_Test_Red.wpilib.json")
     };
     public Test() {
         super("Test");

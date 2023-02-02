@@ -5,7 +5,6 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.REVPhysicsSim;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -14,7 +13,6 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
-import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.ADIS16470_IMU;
 import edu.wpi.first.wpilibj.RobotController;
@@ -40,8 +38,6 @@ public class DriveSubsystem extends SubsystemBase {
 
 
     public DriveSubsystem() {
-        REVPhysicsSim.getInstance().addSparkMax(m_LeftLeader, DCMotor.getNEO(2));
-        REVPhysicsSim.getInstance().addSparkMax(m_RightLeader, DCMotor.getNEO(2));
         m_LeftLeader = new CANSparkMax(
             Constants.k_LeftDriveLeaderID,
             MotorType.kBrushless

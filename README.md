@@ -4,7 +4,8 @@
 
 MAXSwerve template for the 2024 FRC game, Crescendo.
 
-Teams must alter this template slightly to make it work with their robots. See [CUSTOMIZATION.md]
+Teams must alter this template slightly to make it work with their robots:
+[Customization](/CUSTOMIZATION.md)
 
 ## Features
 * REV NEO drive motor (Compatable with NEO Vortex with minor code changes)

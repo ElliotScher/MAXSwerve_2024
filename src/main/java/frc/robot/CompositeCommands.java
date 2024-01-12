@@ -27,4 +27,8 @@ public final class CompositeCommands {
   public static final Command setX(DriveSubsystem drive) {
     return drive.runOnce(drive::setX);
   }
+
+  public static final Command resetHeading(DriveSubsystem drive) {
+    return drive.runOnce(drive::zeroHeading);
+  }
 }

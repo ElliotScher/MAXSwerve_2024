@@ -42,6 +42,7 @@ public class RobotContainer {
             true));
 
     driver.x().whileTrue(CompositeCommands.setX(drive));
+    driver.b().whileTrue(CompositeCommands.resetHeading(drive));
   }
 
   public Command getAutonomousCommand() {
